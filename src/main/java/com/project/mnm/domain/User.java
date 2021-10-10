@@ -64,4 +64,17 @@ public class User {
     public void setExit(String exit) {
         this.exit = exit;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", type='" + type + '\'' +
+                ", matching=" + matching +
+                ", enter='" + enter + '\'' +
+                ", exit='" + exit + '\'' +
+                '}';
+    }
 }
