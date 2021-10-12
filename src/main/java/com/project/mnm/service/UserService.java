@@ -2,7 +2,6 @@ package com.project.mnm.service;
 
 import com.project.mnm.domain.User;
 import com.project.mnm.repository.JpaUserRepository;
-import com.project.mnm.repository.MemoryUserRepository;
 import com.project.mnm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
