@@ -1,7 +1,6 @@
 package com.project.mnm.service;
 
 import com.project.mnm.domain.User;
-import com.project.mnm.repository.JpaUserRepository;
 import com.project.mnm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(JpaUserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

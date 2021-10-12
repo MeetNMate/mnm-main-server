@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 @SpringBootTest
 @Transactional
 public class MemoryUserRepositoryTests {
-    @Qualifier("jpaUserRepository")
+    @Qualifier("userRepository")
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -52,10 +52,8 @@ public class MemoryUserRepositoryTests {
 
     @Test
     public void save() {
-        User user1 = new User();
         User user2 = new User();
-        user1.setEmail("song");
-        user2.setEmail("kim");
+        user2.setEmail("res");
 
         Long saveID = userService.join(user2);
         System.out.println(saveID);

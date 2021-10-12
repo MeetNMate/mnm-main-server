@@ -7,10 +7,8 @@ import javax.persistence.EntityManager;
 
 @Configuration
 public class SpringConfig {
-    private EntityManager entityManager;
 
     @Autowired
     public SpringConfig(EntityManager entityManager){
-        this.entityManager = entityManager;
     }
 }
