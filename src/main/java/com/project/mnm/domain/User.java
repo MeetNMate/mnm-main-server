@@ -1,7 +1,14 @@
 package com.project.mnm.domain;
 
+import lombok.*;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -9,28 +16,14 @@ public class User {
     private long id;
     @Column(name = "email")
     private String email;
-
-    public User() {
-    }
-
-    public User(String email) {
-        this.email = email;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    @Column(name = "password")
+    private String password;
+    @Column(name = "type")
+    private boolean type;
+    @Column(name = "user_matching")
+    private boolean userMatching;
+    @Column(name = "create_at")
+    private Timestamp createAt;
+    @Column(name = "remove_at")
+    private Timestamp removeAt;
 }
