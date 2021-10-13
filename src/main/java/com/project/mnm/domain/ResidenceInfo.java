@@ -2,10 +2,7 @@ package com.project.mnm.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Getter
@@ -17,7 +14,11 @@ import java.sql.Timestamp;
 @Table(name = "residence_infos")
 public class ResidenceInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @OneToOne
+    @JoinColumn(name = "uid")
+    private User user;
     @Column(name = "headcount")
     private int headcount;
     @Column(name = "location")

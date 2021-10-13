@@ -1,7 +1,9 @@
 package com.project.mnm.domain;
 
 import lombok.*;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -9,22 +11,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "profiles")
-public class Profile {
+@Table(name = "matching_infos")
+public class MatchingInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @OneToOne
     @JoinColumn(name = "uid")
     private User user;
-    @Column(name = "image")
-    private String image;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "sex")
-    private String sex;
-    @Column(name = "age")
-    private int age;
-    @Column(name = "score")
-    private int score;
+    @Column(name = "mbti")
+    private String mbti;
+    @Column(name = "user_smoking")
+    private String userSmoking;
 }
