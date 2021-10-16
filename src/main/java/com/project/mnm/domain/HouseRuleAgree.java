@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "house_role_agree")
-public class HouseRoleAgree {
+@Table(name = "house_rule_agree")
+public class HouseRuleAgree {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
