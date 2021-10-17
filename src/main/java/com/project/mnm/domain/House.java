@@ -1,6 +1,8 @@
 package com.project.mnm.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,8 +22,10 @@ public class House {
     private String name;
     @Column(name = "description")
     private String description;
+    @CreationTimestamp
     @Column(name = "create_at")
     private Timestamp createAt;
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updateAt;
     @Column(name = "delete_at")
@@ -29,10 +33,10 @@ public class House {
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
     @Column(name = "capacity")
-    private Timestamp capacity;
+    private int capacity;
     @ManyToOne
     @JoinColumn(name = "captain_id")
-    private User captain_id;
+    private User captainId;
     @Column(name = "location")
-    private Timestamp location;
+    private String location;
 }
