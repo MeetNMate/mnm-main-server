@@ -3,12 +3,9 @@ package com.project.mnm.controller;
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.User;
 import com.project.mnm.dto.HouseInsertDto;
-import com.project.mnm.repository.UserRepository;
 import com.project.mnm.service.HouseService;
-import com.project.mnm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,22 +23,21 @@ public class HouseController {
 
     @GetMapping("")
     @ResponseBody
-    public String readAllHouse(){
-//        return houseService.findHouseByUserId(1);
-        return "준비중";
+    public List<House> readAllHouse(){
+        User user = new User();
+        return houseService.findHouseByUserId(user.getId());
     }
 
     @PostMapping("")
     @ResponseBody
-    public String createHouse(@RequestBody HouseInsertDto houseDto){
+    public House createHouse(@RequestBody HouseInsertDto houseDto){
         House house = new House();
         house.setDescription(houseDto.getDescription());
         house.setCapacity(houseDto.getCapacity());
 //        User user = UserRepository.
 //        house.setCaptainId(houseDto.getCaptainId());
         house.setLocation(houseDto.getLocation());
-        houseService.createdHouse(house);
-        return houseDto.toString();
+        return houseService.createdHouse(house);
     }
 
     @GetMapping("/{id}")
