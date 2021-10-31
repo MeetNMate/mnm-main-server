@@ -1,13 +1,21 @@
 package com.project.mnm.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "email")
     private String email;
-    private String password;
-    private String type;
-    private boolean matching;
-    private String enter;
-    private String exit;
+
+    public User() {
+    }
+
+    public User(String email) {
+        this.email = email;
+    }
 
     public long getId() {
         return id;
@@ -25,56 +33,4 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public boolean isMatching() {
-        return matching;
-    }
-
-    public void setMatching(boolean matching) {
-        this.matching = matching;
-    }
-
-    public String getEnter() {
-        return enter;
-    }
-
-    public void setEnter(String enter) {
-        this.enter = enter;
-    }
-
-    public String getExit() {
-        return exit;
-    }
-
-    public void setExit(String exit) {
-        this.exit = exit;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", type='" + type + '\'' +
-                ", matching=" + matching +
-                ", enter='" + enter + '\'' +
-                ", exit='" + exit + '\'' +
-                '}';
-    }
 }
