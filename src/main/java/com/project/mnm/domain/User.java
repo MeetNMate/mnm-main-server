@@ -26,4 +26,19 @@ public class User {
     private Timestamp createAt;
     @Column(name = "remove_at")
     private Timestamp removeAt;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", type=" + type +
+                ", user_matching=" + userMatching +
+                ", create_at=" + createAt +
+                ", remove_at=" + removeAt +
+                "}";
+    }
 }
+
+
