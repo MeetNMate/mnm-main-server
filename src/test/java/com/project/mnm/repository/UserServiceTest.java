@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Timestamp;
-
 @SpringBootTest
 public class UserServiceTest {
     @Autowired
@@ -19,12 +17,12 @@ public class UserServiceTest {
     @BeforeEach()
     public void initUser() {
         this.user = new User();
-        this.user.setEmail("ririhan217@test.com");
+        this.user.setEmail("ririhan@test.com");
         this.user.setPassword("blackpink0808");
     }
 
     @Test
     public void signUp() throws Exception {
-        userService.signUpUser(user);
+        userService.joinUser(user);
     }
 }
