@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller("/")
 public class MainController {
 
-    @GetMapping("")
+    @GetMapping("user/first")
     @ResponseBody
     public String first(Model model) {
         return "first";

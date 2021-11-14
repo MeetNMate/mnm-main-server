@@ -15,12 +15,18 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.5'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
 	implementation 'org.projectlombok:lombok:1.18.22'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
+	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 test {
