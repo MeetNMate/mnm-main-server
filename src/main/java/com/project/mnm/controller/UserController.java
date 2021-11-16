@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<User> getAll() {
         return userService.getAllUsers();
     }
@@ -23,6 +23,25 @@ public class UserController {
     @GetMapping("/{email}")
     public User get(@PathVariable("email") String email) {
         return userService.getUser(email);
+    }
+
+    @DeleteMapping("")
+    public Response deleteAll() {
+        Response response = new Response();
+
+        try {
+            userService.deleteAllUsers();
+
+            response.setResponse("success");
+            response.setMessage("모든 회원을 삭제하였습니다.");
+        }
+        catch (Exception e) {
+            response.setResponse("failed");
+            response.setMessage("모든 회원 삭제를 하는 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
     }
 
     @DeleteMapping("/{email}")
@@ -62,4 +81,41 @@ public class UserController {
 //
 //        return response;
 //    }
+
+    @GetMapping("/{email}/use/matching")
+    public Response isUseMatching(@PathVariable("email") String email) {
+        Response response = new Response();
+
+        try {
+            response.setResponse("success");
+            response.setData(userService.isUseMatching(email));
+        }
+        catch (Exception e) {
+            response.setResponse("failed");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
+
+    @PutMapping("/{email}/use/matching/{use_matching}")
+    public Response changeUseMatching(@PathVariable("email") String email,
+                                      @PathVariable("use_matching") Boolean use_matching) {
+        Response response = new Response();
+
+        userService.changeUseMatching(email, use_matching);
+
+        try {
+            response.setResponse("success");
+            response.setMessage("매칭 기능 사용 여부를 변경하였습니다.");
+            response.setData(use_matching);
+        }
+        catch (Exception e) {
+            response.setResponse("failed");
+            response.setMessage("매칭 기능 사용 여부를 변경하는 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
 }

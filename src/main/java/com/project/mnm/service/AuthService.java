@@ -27,7 +27,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(user.getPassword()))
                 .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
                 .type(false)
-                .userMatching(true)
+                .useMatching(true)
                 .createAt(new Timestamp(System.currentTimeMillis()))
                 .build()).getId();
     }

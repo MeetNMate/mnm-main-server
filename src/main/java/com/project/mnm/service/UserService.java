@@ -25,6 +25,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
     }
 
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
+
     public void deleteUser(String email) {
         User member = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
@@ -37,6 +41,21 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
 
         userRepository.delete(member);
+    }
+
+    public Boolean isUseMatching(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        return user.isUseMatching();
+    }
+
+    public void changeUseMatching(String email, Boolean use_matching) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        user.setUseMatching(use_matching);
+        userRepository.save(user);
     }
 
 }
