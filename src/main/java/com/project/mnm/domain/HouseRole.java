@@ -18,10 +18,10 @@ public class HouseRole {
     private long id;
     @ManyToOne
     @JoinColumn(name = "hid")
-    private House hid;
+    private House house;
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
     @Column(name = "create_at")
     private Timestamp createAt;
     @Column(name = "updated_at")
@@ -35,6 +35,6 @@ public class HouseRole {
     @Column(name = "start_at")
     private Timestamp startAt;
     @Column(name = "routine")
-    private Timestamp routine;
+    private int routine;
 
 }
