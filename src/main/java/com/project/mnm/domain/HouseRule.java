@@ -18,10 +18,10 @@ public class HouseRule {
     private long id;
     @ManyToOne
     @JoinColumn(name = "hid")
-    private House hid;
+    private House house;
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
     @Column(name = "original_rule")
     private String originalRule;
     @Column(name = "new_rule")
