@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +19,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     public Long joinUser(User user) throws Exception {
         if (!userRepository.findByEmail(user.getEmail()).isEmpty())
@@ -32,14 +38,46 @@ public class UserService {
                 .build()).getId();
     }
 
-    public String loginUser(User user) {
+    public String loginUser(User user) throws Exception {
         User member = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+
+        if (member.getRemoveAt() != null) {
+            throw new Exception("탈퇴한 사용자입니다.");
+        }
+
         if (!passwordEncoder.matches(user.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+    }
+
+    public void logoutUser(User user) {
+
+    }
+
+    public void removeUser(String email) {
+        User member = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+
+        member.setRemoveAt(new Timestamp(System.currentTimeMillis()));
+
+        userRepository.save(member);
+    }
+
+    public void deleteUser(String email) {
+        User member = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+
+        userRepository.delete(member);
+    }
+
+    public void deleteUserById(Long id) {
+        User member = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+
+        userRepository.delete(member);
     }
 
 }
