@@ -31,7 +31,6 @@ public class ResidenceInfoService {
         if (!residenceInfoRepository.findByUser(user).isEmpty())
             throw new Exception("이미 거주정보가 등록되어 있습니다.");
 
-        System.out.println(termStart + " " + termEnd);
         return residenceInfoRepository.save(ResidenceInfo.builder()
                 .user(user)
                 .headcount(headcount)

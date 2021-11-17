@@ -56,12 +56,12 @@ public class ResidenceInfoController {
 
         try {
             response.setResponse("success");
-            response.setMessage("프로필 수정을 성공적으로 완료했습니다.");
+            response.setMessage("거주정보 수정을 성공적으로 완료했습니다.");
             response.setData(residenceInfoService.updateResidenceInfo(uid, info));
         }
         catch (Exception e) {
             response.setResponse("failed");
-            response.setMessage("프로필 수정을 하는 도중 오류가 발생했습니다.");
+            response.setMessage("거주정보 수정을 하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
 
