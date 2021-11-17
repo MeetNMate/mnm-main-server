@@ -3,6 +3,7 @@ package com.project.mnm.domain;
 import lombok.*;
 import javax.persistence.*;
 
+@Builder
 @Getter
 @Setter
 @ToString
