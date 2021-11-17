@@ -47,8 +47,7 @@ public class HouseRuleService {
         return houseRuleRepository.findById(id);
     }
 
-    public List<HouseRule> findHouseRuleByHouseId(long id) {
-        Optional<House> house = houseRepository.findById(id);
-        return houseRuleRepository.findByHouse(house);
+    public List<HouseRule> findHouseRuleByHouseId(long houseId) {
+        return houseRuleRepository.findByHouse(houseRepository.findById(houseId));
     }
 }
