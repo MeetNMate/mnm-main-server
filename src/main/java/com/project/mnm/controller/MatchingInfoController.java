@@ -6,12 +6,13 @@ import com.project.mnm.service.MatchingInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/user/matchinginfo")
 @RestController
 public class MatchingInfoController {
     @Autowired
     private MatchingInfoService matchingInfoService;
 
-    @GetMapping("/matchinginfo/{uid}")
+    @GetMapping("/{uid}")
     public Response getResidenceInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
@@ -29,7 +30,7 @@ public class MatchingInfoController {
         return response;
     }
 
-    @PostMapping("/matchinginfo")
+    @PostMapping("")
     public Response addResidenceInfo(@RequestBody MatchingInfo info) {
         Response response = new Response();
 
@@ -47,7 +48,7 @@ public class MatchingInfoController {
         return response;
     }
 
-    @PutMapping("/matchinginfo/{uid}") // 전체 수정만 가능
+    @PutMapping("/{uid}") // 전체 수정만 가능
     public Response updateMatchingInfo(@PathVariable("uid") Long uid,
                                         @RequestBody MatchingInfo info) {
         Response response = new Response();
@@ -66,7 +67,7 @@ public class MatchingInfoController {
         return response;
     }
 
-    @DeleteMapping("/matchinginfo/{uid}")
+    @DeleteMapping("/{uid}")
     public Response deleteResidenceInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
