@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@CrossOrigin("*")
 @RestController
 public class ProfileController {
     @Autowired
@@ -57,13 +58,14 @@ public class ProfileController {
                                   @RequestParam("name") String name,
                                   @RequestParam("sex") String sex,
                                   @RequestParam("age") Integer age,
-                                  @RequestParam("score") Integer score) {
+                                  @RequestParam("score") Integer score,
+                                  @RequestParam("description") String description) {
         Response response = new Response();
 
         try {
             response.setResponse("success");
             response.setMessage("프로필 수정을 성공적으로 완료했습니다.");
-            response.setData(profileService.updateProfile(uid, imageFile, name, sex, age, score));
+            response.setData(profileService.updateProfile(uid, imageFile, name, sex, age, score, description));
         }
         catch (Exception e) {
             response.setResponse("failed");
