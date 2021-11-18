@@ -66,4 +66,10 @@ public class HouseRuleService {
 
         return houseRuleRepository.save(houseRule);
     }
+
+    public void deleteHouseRule(long ruleId) {
+        HouseRule houseRule = houseRuleRepository.findById(ruleId)
+                .orElseThrow(() -> new IllegalArgumentException("존재한지 않는 룰입니다."));
+        houseRuleRepository.delete(houseRule);
+    }
 }
