@@ -2,6 +2,7 @@ package com.project.mnm.controller;
 
 import com.project.mnm.domain.Response;
 import com.project.mnm.dto.HouseRuleInsertDto;
+import com.project.mnm.dto.HouseRuleUpdateDto;
 import com.project.mnm.service.HouseRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +43,16 @@ public class HouseRuleController {
         return response;
     }
 
+    @PatchMapping("{id}")
+    public Response updateRule(@PathVariable("id") int ruleId, @RequestBody HouseRuleUpdateDto dto){
+        Response response;
+        try {
+            String message = "하우스 룰 수정을 성공적으로 완료했습니다.";
+            response = new Response("success", message, houseRuleService.updateHouseRule(ruleId, dto));
+        } catch (Exception e) {
+            String message = "하우스 룰을 수정하는 도중 오류가 발생했습니다.";
+            response = new Response("failed", message, e.toString());
+        }
+        return response;
+    }
 }
