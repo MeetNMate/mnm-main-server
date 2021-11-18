@@ -61,6 +61,7 @@ public class HouseRuleController {
         Response response;
         try {
             String message = "하우스 룰 삭제를 성공적으로 완료했습니다.";
+            houseRuleService.deleteHouseRule(ruleId);
             response = new Response("success", message, "");
         } catch (Exception e) {
             String message = "하우스 룰을 삭제하는 도중 오류가 발생했습니다.";
