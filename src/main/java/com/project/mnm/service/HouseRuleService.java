@@ -4,6 +4,7 @@ import com.project.mnm.domain.House;
 import com.project.mnm.domain.HouseRule;
 import com.project.mnm.domain.User;
 import com.project.mnm.dto.HouseRuleInsertDto;
+import com.project.mnm.dto.HouseRuleUpdateDto;
 import com.project.mnm.repository.HouseRepository;
 import com.project.mnm.repository.HouseRuleRepository;
 import com.project.mnm.repository.UserRepository;
@@ -49,5 +50,20 @@ public class HouseRuleService {
 
     public List<HouseRule> findHouseRuleByHouseId(long houseId) {
         return houseRuleRepository.findByHouse(houseRepository.findById(houseId));
+    }
+
+    public HouseRule updateHouseRule(long ruleId, HouseRuleUpdateDto dto) {
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+        HouseRule houseRule = houseRuleRepository.findById(ruleId)
+                .orElseThrow(() -> new IllegalArgumentException("존재한지 않는 룰입니다."));
+
+        if (dto.getRule() != null) {
+            houseRule.setNewRule(dto.getRule());
+        }
+        houseRule.setUser(user);
+        houseRule.setLowerNum(dto.getLowerNum());
+
+        return houseRuleRepository.save(houseRule);
     }
 }
