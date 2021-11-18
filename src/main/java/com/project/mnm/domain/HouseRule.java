@@ -34,8 +34,6 @@ public class HouseRule {
     private Timestamp createAt;
     @Column(name = "updated_at")
     private Timestamp updateAt;
-    @Column(name = "delete_at")
-    private Timestamp deleteAt;
     @Column(name = "agree_at")
     private Timestamp agreeAt;
 }
