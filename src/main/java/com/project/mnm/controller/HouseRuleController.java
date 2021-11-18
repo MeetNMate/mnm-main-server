@@ -43,7 +43,7 @@ public class HouseRuleController {
         return response;
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public Response updateRule(@PathVariable("id") int ruleId, @RequestBody HouseRuleUpdateDto dto){
         Response response;
         try {
@@ -51,6 +51,19 @@ public class HouseRuleController {
             response = new Response("success", message, houseRuleService.updateHouseRule(ruleId, dto));
         } catch (Exception e) {
             String message = "하우스 룰을 수정하는 도중 오류가 발생했습니다.";
+            response = new Response("failed", message, e.toString());
+        }
+        return response;
+    }
+
+    @DeleteMapping("/{id}")
+    public Response deleteRule(@PathVariable("id") int ruleId){
+        Response response;
+        try {
+            String message = "하우스 룰 삭제를 성공적으로 완료했습니다.";
+            response = new Response("success", message, "");
+        } catch (Exception e) {
+            String message = "하우스 룰을 삭제하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
         }
         return response;
