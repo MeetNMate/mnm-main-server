@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HouseRuleService {
@@ -44,11 +43,7 @@ public class HouseRuleService {
         return houseRuleRepository.save(houseRule);
     }
 
-    public Optional<HouseRule> findHouseRuleById(long id) {
-        return houseRuleRepository.findById(id);
-    }
-
-    public List<HouseRule> findHouseRuleByHouseId(long houseId) {
+    public List<HouseRule> findHouseRulesByHouseId(long houseId) {
         return houseRuleRepository.findByHouse(houseRepository.findById(houseId));
     }
 
