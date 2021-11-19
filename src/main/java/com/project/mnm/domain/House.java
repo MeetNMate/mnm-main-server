@@ -28,8 +28,6 @@ public class House {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updateAt;
-    @Column(name = "delete_at")
-    private Timestamp deleteAt;
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
     @Column(name = "capacity")
