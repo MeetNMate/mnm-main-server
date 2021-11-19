@@ -29,8 +29,8 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "type")
     private boolean type;
-    @Column(name = "user_matching")
-    private boolean userMatching;
+    @Column(name = "use_matching")
+    private boolean useMatching;
     @Column(name = "create_at")
     private Timestamp createAt;
     @Column(name = "remove_at")
@@ -79,7 +79,7 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", type=" + type +
-                ", user_matching=" + userMatching +
+                ", use_matching=" + useMatching +
                 ", create_at=" + createAt +
                 ", remove_at=" + removeAt +
                 "}";

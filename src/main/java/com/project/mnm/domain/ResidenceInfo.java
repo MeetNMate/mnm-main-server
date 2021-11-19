@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Builder
 @Getter
 @Setter
 @ToString

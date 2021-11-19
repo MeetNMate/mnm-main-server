@@ -3,56 +3,82 @@ package com.project.mnm.controller;
 import com.project.mnm.domain.Response;
 import com.project.mnm.domain.User;
 import com.project.mnm.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+import java.util.List;
+
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    // 회원가입
-    @PostMapping("/join")
-    public Response join(@RequestBody User user) {
+    @GetMapping("")
+    public List<User> getAll() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/{email}")
+    public User get(@PathVariable("email") String email) {
+        return userService.getUser(email);
+    }
+
+    @DeleteMapping("")
+    public Response deleteAll() {
         Response response = new Response();
 
         try {
-            userService.joinUser(user);
+            userService.deleteAllUsers();
+
             response.setResponse("success");
-            response.setMessage("회원가입을 성공적으로 완료했습니다.");
+            response.setMessage("모든 회원을 삭제하였습니다.");
         }
         catch (Exception e) {
             response.setResponse("failed");
-            response.setMessage("회원가입을 하는 도중 오류가 발생했습니다.");
+            response.setMessage("모든 회원 삭제를 하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
 
         return response;
     }
 
-    // 로그인
-    @PostMapping("/login")
-    public Response login(@RequestBody User user) {
+    @DeleteMapping("/{email}")
+    public Response delete(@PathVariable("email") String email) {
         Response response = new Response();
 
         try {
-            String jwtToken = userService.loginUser(user);
+            userService.deleteUser(email);
 
             response.setResponse("success");
-            response.setMessage("로그인을 성공적으로 완료했습니다.");
-            response.setData(jwtToken);
+            response.setMessage("회원 삭제를 성공적으로 완료했습니다.");
         }
         catch (Exception e) {
             response.setResponse("failed");
-            response.setMessage("로그인을 하는 도중 오류가 발생했습니다.");
+            response.setMessage("회원 삭제를 하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
 
         return response;
     }
+
+//    @DeleteMapping("/users/{id}")
+//    public Response delete(@PathVariable("id") Long id) {
+//        Response response = new Response();
+//
+//        try {
+//            userService.deleteUserById(id);
+//
+//            response.setResponse("success");
+//            response.setMessage("회원 삭제를 성공적으로 완료했습니다.");
+//        }
+//        catch (Exception e) {
+//            response.setResponse("failed");
+//            response.setMessage("회원 삭제를 하는 도중 오류가 발생했습니다.");
+//            response.setData(e.toString());
+//        }
+//
+//        return response;
+//    }
 }
