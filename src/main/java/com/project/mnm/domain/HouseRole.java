@@ -26,8 +26,6 @@ public class HouseRole {
     private Timestamp createAt;
     @Column(name = "updated_at")
     private Timestamp updateAt;
-    @Column(name = "delete_at")
-    private Timestamp deleteAt;
     @Column(name = "role")
     private String role;
     @Column(name = "week")

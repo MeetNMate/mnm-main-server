@@ -35,7 +35,7 @@ public class HouseRuleController {
         Response response;
         try {
             String message = "하우스 룰 조회를 성공적으로 완료했습니다.";
-            response = new Response("success", message, houseRuleService.findHouseRuleByHouseId(houseId));
+            response = new Response("success", message, houseRuleService.findHouseRulesByHouseId(houseId));
         } catch (Exception e) {
             String message = "하우스 룰을 조회하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
