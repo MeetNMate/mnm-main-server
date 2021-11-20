@@ -18,10 +18,10 @@ public class HouseRule {
     private long id;
     @ManyToOne
     @JoinColumn(name = "hid")
-    private House hid;
+    private House house;
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
     @Column(name = "original_rule")
     private String originalRule;
     @Column(name = "new_rule")
@@ -34,8 +34,6 @@ public class HouseRule {
     private Timestamp createAt;
     @Column(name = "updated_at")
     private Timestamp updateAt;
-    @Column(name = "delete_at")
-    private Timestamp deleteAt;
     @Column(name = "agree_at")
     private Timestamp agreeAt;
 }
