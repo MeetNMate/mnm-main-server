@@ -19,9 +19,9 @@ public class AuthController {
         Response response = new Response();
 
         try {
-            authService.joinUser(user);
             response.setResponse("success");
             response.setMessage("회원가입을 성공적으로 완료했습니다.");
+            response.setData(authService.joinUser(user));
         }
         catch (Exception e) {
             response.setResponse("failed");

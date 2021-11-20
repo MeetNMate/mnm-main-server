@@ -19,7 +19,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-    public Long joinUser(User user) throws Exception {
+    public User joinUser(User user) throws Exception {
         if (!userRepository.findByEmail(user.getEmail()).isEmpty())
             throw new Exception("이미 존재하는 회원입니다.");
 
@@ -33,7 +33,7 @@ public class AuthService {
                 .type(false)
                 .useMatching(true)
                 .createAt(new Timestamp(System.currentTimeMillis()))
-                .build()).getId();
+                .build());
     }
 
     public String loginUser(User user) throws Exception {
