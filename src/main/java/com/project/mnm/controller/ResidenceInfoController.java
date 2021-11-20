@@ -6,12 +6,13 @@ import com.project.mnm.service.ResidenceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/user/residenceinfo")
 @RestController
 public class ResidenceInfoController {
     @Autowired
     private ResidenceInfoService residenceInfoService;
 
-    @GetMapping("/residenceinfo/{uid}")
+    @GetMapping("/{uid}")
     public Response getResidenceInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
@@ -29,7 +30,7 @@ public class ResidenceInfoController {
         return response;
     }
 
-    @PostMapping("/residenceinfo")
+    @PostMapping("")
     public Response addResidenceInfo(@RequestBody ResidenceInfo info) {
         Response response = new Response();
 
@@ -49,7 +50,7 @@ public class ResidenceInfoController {
         return response;
     }
 
-    @PutMapping("/residenceinfo/{uid}") // 전체, 일부 수정 모두 가능
+    @PutMapping("/{uid}") // 전체, 일부 수정 모두 가능
     public Response updateResidenceInfo(@PathVariable("uid") Long uid,
                                         @RequestBody ResidenceInfo info) {
         Response response = new Response();
@@ -68,7 +69,7 @@ public class ResidenceInfoController {
         return response;
     }
 
-    @DeleteMapping("/residenceinfo/{uid}")
+    @DeleteMapping("/{uid}")
     public Response deleteResidenceInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
 

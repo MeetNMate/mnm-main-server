@@ -6,6 +6,7 @@ import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.json.simple.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -18,9 +19,12 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-    public Long joinUser(User user) throws Exception {
+    public User joinUser(User user) throws Exception {
         if (!userRepository.findByEmail(user.getEmail()).isEmpty())
             throw new Exception("이미 존재하는 회원입니다.");
+
+        if (user.getPassword() == null || user.getPassword().equals(""))
+            throw new Exception("비밀번호를 입력해주세요.");
 
         return userRepository.save(User.builder()
                 .email(user.getEmail())
@@ -29,7 +33,7 @@ public class AuthService {
                 .type(false)
                 .useMatching(true)
                 .createAt(new Timestamp(System.currentTimeMillis()))
-                .build()).getId();
+                .build());
     }
 
     public String loginUser(User user) throws Exception {
@@ -44,7 +48,12 @@ public class AuthService {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uid", member.getId());
+        jsonObject.put("token", token);
+        return jsonObject.toJSONString();
     }
 
     public void logoutUser(User user) {

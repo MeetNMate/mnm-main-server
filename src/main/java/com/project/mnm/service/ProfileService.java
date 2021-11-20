@@ -39,10 +39,11 @@ public class ProfileService {
                 .name(name)
                 .sex(sex)
                 .age(age)
+                .description("저와 함께 살 멋쟁이를 구합니다.")
                 .build());
     }
 
-    public Profile updateProfile(Long uid, MultipartFile imageFile, String name, String sex, Integer age, Integer score) throws Exception {
+    public Profile updateProfile(Long uid, MultipartFile imageFile, String name, String sex, Integer age, Integer score, String description) throws Exception {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -56,6 +57,7 @@ public class ProfileService {
         profile.setSex(sex);
         profile.setAge(age);
         profile.setScore(score);
+        profile.setDescription(description);
 
         return profileRepository.save(profile);
     }

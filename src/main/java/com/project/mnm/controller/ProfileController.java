@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@RequestMapping("/user/profile")
 @RestController
 public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @GetMapping("/profile/{uid}")
+    @GetMapping("/{uid}")
     public Response getProfile(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
@@ -29,7 +30,7 @@ public class ProfileController {
         return response;
     }
 
-    @PostMapping("/profile")
+    @PostMapping("")
     public Response addProfile(@RequestParam("uid") Long uid,
                                @RequestParam("image") MultipartFile imageFile,
                                @RequestParam("name") String name,
@@ -51,19 +52,20 @@ public class ProfileController {
         return response;
     }
 
-    @PutMapping("/profile/{uid}")
+    @PutMapping("/{uid}")
     public Response updateProfile(@PathVariable("uid") Long uid,
                                   @RequestParam("image") MultipartFile imageFile,
                                   @RequestParam("name") String name,
                                   @RequestParam("sex") String sex,
                                   @RequestParam("age") Integer age,
-                                  @RequestParam("score") Integer score) {
+                                  @RequestParam("score") Integer score,
+                                  @RequestParam("description") String description) {
         Response response = new Response();
 
         try {
             response.setResponse("success");
             response.setMessage("프로필 수정을 성공적으로 완료했습니다.");
-            response.setData(profileService.updateProfile(uid, imageFile, name, sex, age, score));
+            response.setData(profileService.updateProfile(uid, imageFile, name, sex, age, score, description));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -74,7 +76,7 @@ public class ProfileController {
         return response;
     }
 
-    @PatchMapping("/profile/{uid}")
+    @PatchMapping("/{uid}")
     public Response editProfile(@PathVariable("uid") Long uid,
                                   @RequestParam(value = "image", required = false) MultipartFile imageFile,
                                   @RequestParam(value = "name", required = false) String name,
@@ -97,7 +99,7 @@ public class ProfileController {
         return response;
     }
 
-    @DeleteMapping("/profile/{uid}")
+    @DeleteMapping("/{uid}")
     public Response deleteProfile(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
