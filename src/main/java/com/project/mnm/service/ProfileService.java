@@ -32,11 +32,20 @@ public class ProfileService {
         if (!profileRepository.findByUser(user).isEmpty())
             throw new Exception("이미 프로필이 등록되어 있습니다.");
 
-//        String imagePath = imageService.saveProfileImage(user.getId(), profileInsertDto.getImageFile());
+        String imagePath = null;
+
+        if (profileInsertDto.getImageFile() == null) {
+            imagePath = "images/profile/default.png";
+        }
+        else {
+            imagePath = imageService.saveProfileImage(user.getId(), profileInsertDto.getImageFile());
+        }
+
+        System.out.println(imagePath);
 
         return profileRepository.save(Profile.builder()
                 .user(user)
-                .image("images/profile/5.jpg")
+                .image(imagePath)
                 .name(profileInsertDto.getName())
                 .sex(profileInsertDto.getSex())
                 .age(profileInsertDto.getAge())
