@@ -3,9 +3,11 @@ package com.project.mnm.controller;
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.Response;
-import com.project.mnm.dto.ChattingInsertDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
+import com.project.mnm.dto.SocketSessionInsertDto;
 import com.project.mnm.service.ChattingService;
+import com.project.mnm.service.SocketSessionService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,6 +23,8 @@ public class ChattingController {
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private SocketSessionService socketSessionService;
 
     @MessageMapping("/receive/{cid}")
     @SendTo("/send/{cid}")
@@ -28,6 +32,12 @@ public class ChattingController {
                                     Chatting chatting) {
         // 나중에 Dto 삭제해도 됨
         return chattingService.chattingHandler(cid, chatting);
+    }
+
+    @MessageMapping("/firstreceive")
+    public void firstHandler(SocketSessionInsertDto socketSessionInsertDto) {
+        socketSessionService.addSession(socketSessionInsertDto.getCid(),
+                socketSessionInsertDto.getUid(), socketSessionInsertDto.getSid());
     }
 
     @PostMapping("/chat")
@@ -103,7 +113,7 @@ public class ChattingController {
             simpMessagingTemplate.convertAndSend("/send/"+cid, chatting);
             response.setResponse("success");
             response.setMessage("메이트 요청 수락을 성공적으로 완료했습니다.");
-            response.setData(chattingHandler(cid, chatting));
+            response.setData(chatting);
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -124,7 +134,7 @@ public class ChattingController {
             simpMessagingTemplate.convertAndSend("/send/"+cid, chatting);
             response.setResponse("success");
             response.setMessage("메이트 요청 거절을 성공적으로 완료했습니다.");
-            response.setData(chattingHandler(cid, chatting));
+            response.setData(chatting);
         }
         catch (Exception e) {
             response.setResponse("failed");

@@ -4,7 +4,6 @@ import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.User;
 import com.project.mnm.domain.UserChatting;
-import com.project.mnm.dto.ChattingInsertDto;
 import com.project.mnm.dto.ChattingResponseDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.repository.ChattingRepository;
