@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_chatting")
+@Table(name = "chatting_rooms")
 public class ChattingRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class ChattingRoom {
     private Timestamp requestAt;
     @ManyToOne
     @JoinColumn(name = "request_uid")
-    private User requestUid;
+    private User requestUser;
     @Column(name = "request_success")
     private boolean requestSuccess;
 }

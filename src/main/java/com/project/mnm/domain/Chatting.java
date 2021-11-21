@@ -19,7 +19,7 @@ public class Chatting {
     private long id;
     @ManyToOne
     @JoinColumn(name = "cid")
-    private ChattingRoom cid;
+    private ChattingRoom chattingRoom;
     @ManyToOne
     @JoinColumn(name = "uid")
     private User user;
