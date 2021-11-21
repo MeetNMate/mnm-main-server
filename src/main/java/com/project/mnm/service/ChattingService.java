@@ -27,9 +27,8 @@ public class ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserChattingRepository userChattingRepository;
 
-    public Chatting chattingHandler(Long cid, ChattingInsertDto chattingInsertDto) {
-        System.out.println(cid+""+chattingInsertDto);
-        User user = userRepository.findById(chattingInsertDto.getUid())
+    public Chatting chattingHandler(Long cid, Chatting chatting) {
+        User user = userRepository.findById(chatting.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
@@ -38,12 +37,8 @@ public class ChattingService {
         userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 참여하고 있지 않습니다."));
 
-        Chatting chatting = new Chatting();
         chatting.setUser(user);
         chatting.setChattingRoom(chattingRoom);
-        chatting.setMessage(chattingInsertDto.getMessage());
-        chatting.setSendAt(chattingInsertDto.getSendAt());
-        chatting.setIsRequest(chattingInsertDto.getIsRequest());
 
         return chattingRepository.save(chatting);
     }
@@ -172,6 +167,30 @@ public class ChattingService {
                 .user(user)
                 .chattingRoom(chattingRoom)
                 .message("♡좋아요♡")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(false)
+                .build());
+    }
+
+    public Chatting declineRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        if (chattingRoom.getRequestUser() == null)
+            throw new Exception("요청이 없습니다.");
+
+        chattingRoom.setRequestAt(null);
+        chattingRoom.setRequestUser(null);
+        chattingRoom.setRequestSuccess(false);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("죄송합니다ㅠㅠ")
                 .sendAt(new Timestamp(System.currentTimeMillis()))
                 .isRequest(false)
                 .build());
