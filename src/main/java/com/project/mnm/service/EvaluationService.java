@@ -1,32 +1,31 @@
 package com.project.mnm.service;
 
 import com.project.mnm.config.JwtTokenProvider;
-import com.project.mnm.domain.Evaluation;
-import com.project.mnm.domain.House;
-import com.project.mnm.domain.Profile;
-import com.project.mnm.domain.User;
+import com.project.mnm.domain.*;
 import com.project.mnm.dto.EvaluationInsertDto;
-import com.project.mnm.repository.EvaluationRepository;
-import com.project.mnm.repository.HouseRepository;
-import com.project.mnm.repository.ProfileRepository;
-import com.project.mnm.repository.UserRepository;
+import com.project.mnm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EvaluationService {
     private final EvaluationRepository evaluationRepository;
     private final UserRepository userRepository;
+    private final UserHouseRepository userHouseRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final HouseRepository houseRepository;
     private final ProfileRepository profileRepository;
 
     @Autowired
-    public EvaluationService(EvaluationRepository evaluationRepository, UserRepository userRepository, JwtTokenProvider jwtTokenProvider, HouseRepository houseRepository, ProfileRepository profileRepository) {
+    public EvaluationService(EvaluationRepository evaluationRepository, UserRepository userRepository, UserHouseRepository userHouseRepository, JwtTokenProvider jwtTokenProvider, HouseRepository houseRepository, ProfileRepository profileRepository) {
         this.evaluationRepository = evaluationRepository;
         this.userRepository = userRepository;
+        this.userHouseRepository = userHouseRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.houseRepository = houseRepository;
         this.profileRepository = profileRepository;
@@ -64,5 +63,26 @@ public class EvaluationService {
 
         profile.setScore(totalScore);
         profileRepository.save(profile);
+    }
+
+    public List<User> findDoNotEvaluate(String userToken, long houseId) {
+        String userEmail = jwtTokenProvider.getUserPk(userToken);
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+        House house = houseRepository.findById(houseId)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        List<UserHouse> list = userHouseRepository.findAllByHouse(house);
+        Set<User> houseUsers = new HashSet<>();
+        for (UserHouse item : list) {
+            houseUsers.add(item.getUser());
+        }
+        houseUsers.remove(user);
+        List<Evaluation> evaluations = evaluationRepository.findAllByHouseAndAppraiser(house, user);
+        for (Evaluation item : evaluations) {
+            houseUsers.remove(item.getAppraisee());
+        }
+
+        return new ArrayList<>(houseUsers);
     }
 }
