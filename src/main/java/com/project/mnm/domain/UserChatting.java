@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -18,10 +19,10 @@ public class UserChatting {
     private long id;
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "cid")
-    private ChattingRoom cid;
+    private ChattingRoom chattingRoom;
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
 }

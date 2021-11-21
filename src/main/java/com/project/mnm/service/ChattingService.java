@@ -1,17 +1,30 @@
 package com.project.mnm.service;
 
 import com.project.mnm.domain.Chatting;
+import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.User;
+import com.project.mnm.domain.UserChatting;
+import com.project.mnm.dto.ChattingResponseDto;
+import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.repository.ChattingRepository;
+import com.project.mnm.repository.ChattingRoomRepository;
+import com.project.mnm.repository.UserChattingRepository;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ChattingService {
     private final UserRepository userRepository;
     private final ChattingRepository chattingRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
+    private final UserChattingRepository userChattingRepository;
 
     public Chatting chattingHandler(Chatting chatting) {
         User user = userRepository.findById(chatting.getUser().getId())
@@ -22,21 +35,107 @@ public class ChattingService {
         return chattingRepository.save(chatting);
     }
 
-//    public Chatting makeChattingRoom(Chatting chatting) {
-//        User user = userRepository.findById(chatting.getUser().getId())
-//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
-//
-//        chatting.setUser(user);
-//        chatting.setMessage("안녕하세요:D");
-//
-//        ChattingRoom chattingRoom = chattingRoomRepository.save(ChattingRoom.builder().build());
-//
-//        userChattingRepository.save(UserChatting.builder()
-//                .user(user)
-//                .chattingRoom(chattingRoom)
-//                .lastAccessAt(chatting.getSendAt())
-//                .build());
-//
-//        return chattingRepository.save(chatting);
-//    }
+    public Chatting makeChattingRoom(ChattingRoomInsertDto chattingRoomInsertDto) {
+        User sender = userRepository.findById(chattingRoomInsertDto.getSenderUid())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        User receiver = userRepository.findById(chattingRoomInsertDto.getReceiverUid())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.save(new ChattingRoom());
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        userChattingRepository.save(UserChatting.builder()
+                .user(sender)
+                .chattingRoom(chattingRoom)
+                .lastAccessAt(now)
+                .build());
+
+        userChattingRepository.save(UserChatting.builder()
+                .user(receiver)
+                .chattingRoom(chattingRoom)
+                .lastAccessAt(now)
+                .build());
+
+        return chattingRepository.save(Chatting.builder()
+                .user(sender)
+                .chattingRoom(chattingRoom)
+                .message("안녕하세요:D")
+                .sendAt(now)
+                .isRequest(false)
+                .build());
+    }
+
+    public List<ChattingRoom> getChattingRoomList(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        List<UserChatting> userChattings = userChattingRepository.findByUser(user);
+
+        // lastAccessAt으로 정렬
+        userChattings.sort(new Comparator<UserChatting>() {
+            @Override
+            public int compare(UserChatting o1, UserChatting o2) {
+                Timestamp t1 = o1.getLastAccessAt();
+                Timestamp t2 = o2.getLastAccessAt();
+                if (t1 == t2) return 0;
+                else if (t1.before(t1)) return 1;
+                else return -1;
+            }
+        });
+
+        List<ChattingRoom> chattingRooms = new ArrayList<ChattingRoom>();
+
+        for (UserChatting userChatting : userChattings) {
+            chattingRooms.add(chattingRoomRepository.findById(userChatting.getChattingRoom().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다.")));
+        }
+
+        return chattingRooms;
+    }
+
+    public List<ChattingResponseDto> getChattingList(String email, Long cid) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.getById(cid);
+
+        userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 들어있지 않습니다."));
+
+        List<Chatting> chattings = chattingRepository.findByChattingRoomOrderBySendAtDesc(chattingRoom);
+
+        List<ChattingResponseDto> chattingResponseDtos = new ArrayList<>();
+
+        for (Chatting chatting : chattings) {
+            ChattingResponseDto chattingResponseDto = new ChattingResponseDto();
+            chattingResponseDto.setCid(chatting.getChattingRoom().getId());
+            chattingResponseDto.setUid(chatting.getUser().getId());
+            chattingResponseDto.setMessage(chatting.getMessage());
+            chattingResponseDto.setSendAt(chatting.getSendAt());
+            chattingResponseDto.setIsRequest(chatting.getIsRequest());
+            chattingResponseDtos.add(chattingResponseDto);
+        }
+
+
+
+        return chattingResponseDtos;
+//        List<Chatting> chattings =  new ArrayList<>();
+//        chattings.addAll(chattingRepository.findByChattingRoom(chattingRoom));
+
+        // sendAt으로 정렬
+//        chattings.sort(new Comparator<Chatting>() {
+//            @Override
+//            public int compare(Chatting o1, Chatting o2) {
+//                Timestamp t1 = o1.getSendAt();
+//                Timestamp t2 = o2.getSendAt();
+//                if (t1 == t2) return 0;
+//                else if (t1.after(t1)) return 1;
+//                else return -1;
+//            }
+//        });
+
+//        return chattings;
+    }
 }
