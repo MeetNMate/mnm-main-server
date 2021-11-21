@@ -16,22 +16,22 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ImageService imageService;
 
-    public Profile getProfile(Long uid) {
-        User user = userRepository.findById(uid)
+    public Profile getProfile(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         return profileRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 등록되어있지 않습니다."));
     }
 
-    public Profile addProfile(Long uid, MultipartFile imageFile, String name, String sex, int age) throws Exception {
-        User user = userRepository.findById(uid)
+    public Profile addProfile(String email, MultipartFile imageFile, String name, String sex, int age) throws Exception {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         if (!profileRepository.findByUser(user).isEmpty())
             throw new Exception("이미 프로필이 등록되어 있습니다.");
 
-        String imagePath = imageService.saveProfileImage(uid, imageFile);
+        String imagePath = imageService.saveProfileImage(user.getId(), imageFile);
 
         return profileRepository.save(Profile.builder()
                 .user(user)
@@ -43,14 +43,14 @@ public class ProfileService {
                 .build());
     }
 
-    public Profile updateProfile(Long uid, MultipartFile imageFile, String name, String sex, Integer age, Integer score, String description) throws Exception {
-        User user = userRepository.findById(uid)
+    public Profile updateProfile(String email, MultipartFile imageFile, String name, String sex, Integer age, Integer score, String description) throws Exception {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         Profile profile = profileRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 등록되어있지 않습니다."));
 
-        String imagePath = imageService.saveProfileImage(uid, imageFile);
+        String imagePath = imageService.saveProfileImage(user.getId(), imageFile);
 
         profile.setImage(imagePath);
         profile.setName(name);
@@ -62,15 +62,15 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public Profile editProfile(Long uid, MultipartFile imageFile, String name, String sex, Integer age, Integer score) throws Exception {
-        User user = userRepository.findById(uid)
+    public Profile editProfile(String email, MultipartFile imageFile, String name, String sex, Integer age, Integer score) throws Exception {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         Profile profile = profileRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 등록되어있지 않습니다."));
 
         if (imageFile != null) {
-            String imagePath = imageService.saveProfileImage(uid, imageFile);
+            String imagePath = imageService.saveProfileImage(user.getId(), imageFile);
             profile.setImage(imagePath);
         }
         if (name != null)
@@ -85,8 +85,8 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public void deleteProfile(Long uid) {
-        User user = userRepository.findById(uid)
+    public void deleteProfile(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         Profile profile = profileRepository.findByUser(user)

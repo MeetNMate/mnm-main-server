@@ -13,16 +13,16 @@ public class MatchingInfoService {
     private final MatchingInfoRepository matchingInfoRepository;
     private final UserRepository userRepository;
 
-    public MatchingInfo getMatchingInfo(Long uid) {
-        User user = userRepository.findById(uid)
+    public MatchingInfo getMatchingInfo(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         return matchingInfoRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("매칭정보가 등록되어있지 않습니다."));
     }
 
-    public MatchingInfo addMatchingInfo(MatchingInfo info) throws Exception {
-        User user = userRepository.findById(info.getUser().getId())
+    public MatchingInfo addMatchingInfo(String email, MatchingInfo info) throws Exception {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         if (!matchingInfoRepository.findByUser(user).isEmpty())
@@ -33,8 +33,8 @@ public class MatchingInfoService {
         return matchingInfoRepository.save(info);
     }
 
-    public MatchingInfo updateMatchingInfo(Long uid, MatchingInfo info) {
-        User user = userRepository.findById(uid)
+    public MatchingInfo updateMatchingInfo(String email, MatchingInfo info) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         MatchingInfo matchingInfo = matchingInfoRepository.findByUser(user)
@@ -45,8 +45,8 @@ public class MatchingInfoService {
         return matchingInfoRepository.save(info);
     }
 
-    public void deleteMatchingInfo(Long uid) {
-        User user = userRepository.findById(uid)
+    public void deleteMatchingInfo(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         MatchingInfo info = matchingInfoRepository.findByUser(user)
