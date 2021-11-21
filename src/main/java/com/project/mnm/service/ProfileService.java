@@ -17,8 +17,8 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ImageService imageService;
 
-    public Profile getProfile(String email) {
-        User user = userRepository.findByEmail(email)
+    public Profile getProfile(Long uid) {
+        User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         return profileRepository.findByUser(user)

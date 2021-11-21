@@ -16,14 +16,14 @@ public class ProfileController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("")
-    public Response getProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
+    @GetMapping("/{uid}")
+    public Response getProfile(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
         try {
             response.setResponse("success");
             response.setMessage("프로필 조회를 성공적으로 완료했습니다.");
-            response.setData(profileService.getProfile(jwtTokenProvider.getUserPk(token)));
+            response.setData(profileService.getProfile(uid));
         }
         catch (Exception e) {
             response.setResponse("failed");
