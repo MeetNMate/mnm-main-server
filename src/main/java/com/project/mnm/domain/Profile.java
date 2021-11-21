@@ -28,4 +28,6 @@ public class Profile {
     private int age;
     @Column(name = "score")
     private int score;
+    @Column(name = "description")
+    private String description;
 }

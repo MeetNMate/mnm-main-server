@@ -3,7 +3,6 @@ package com.project.mnm.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -23,61 +22,57 @@ public class MatchingInfo {
     @Column(name = "mbti")
     private String mbti;
     @Column(name = "user_smoking")
-    private String userSmoking;
+    private int userSmoking;
     @Column(name = "mate_smoking")
-    private String mateSmoking;
+    private int mateSmoking;
     @Column(name = "user_pet")
-    private Boolean userPet;
+    private int userPet;
     @Column(name = "user_pet_dog")
-    private Boolean userPetDog;
+    private int userPetDog;
     @Column(name = "user_pet_cat")
-    private Boolean userPetCat;
+    private int userPetCat;
     @Column(name = "user_pet_reptile_fish")
-    private Boolean userPetReptileFish;
+    private int userPetReptileFish;
     @Column(name = "user_pet_rodent")
-    private Boolean userPet_bird;
+    private int userPet_bird;
     @Column(name = "user_pet_bird")
-    private Boolean userPetBird;
+    private int userPetBird;
     @Column(name = "user_pet_etc")
     private String userPetEtc;
     @Column(name = "mate_pet")
-    private String matePet;
+    private int matePet;
     @Column(name = "mate_pet_dog")
-    private Boolean matePetDog;
+    private int matePetDog;
     @Column(name = "mate_pet_cat")
-    private Boolean matePetCat;
+    private int matePetCat;
     @Column(name = "mate_pet_reptile_fish")
-    private Boolean matePetReptileFish;
+    private int matePetReptileFish;
     @Column(name = "mate_pet_rodent")
-    private Boolean matePet_bird;
+    private int matePet_bird;
     @Column(name = "mate_pet_bird")
-    private Boolean matePetBird;
+    private int matePetBird;
     @Column(name = "mate_pet_etc")
-    private String matePetEtc;
+    private int matePetEtc;
     @Column(name = "air_like_airconditioner")
-    private String airLikeAirconditioner;
-    @Column(name = "air_night_airconditioner")
-    private String airNightAirconditioner;
+    private int airLikeAirconditioner;
     @Column(name = "air_like_heater")
-    private String airLikeHeater;
-    @Column(name = "air_none")
-    private Boolean airNone;
+    private int airLikeHeater;
     @Column(name = "user_bug_killer")
-    private String userBugKiller;
+    private int userBugKiller;
     @Column(name = "mate_bug_killer")
-    private String mateBugKiller;
+    private int mateBugKiller;
     @Column(name = "usesr_cooking")
-    private String userCooking;
+    private int userCooking;
     @Column(name = "mate_cooking")
-    private String mateCooking;
+    private int mateCooking;
     @Column(name = "eat_together")
-    private String eatTogether;
+    private int eatTogether;
     @Column(name = "share_item")
-    private String shareItem;
+    private int shareItem;
     @Column(name = "mate_alcohol")
-    private String mateAlcohol;
+    private int mateAlcohol;
     @Column(name = "mate_clean")
-    private String mateClean;
+    private int mateClean;
     @Column(name = "permission_to_enter")
-    private String permissionToEnter;
+    private int permissionToEnter;
 }

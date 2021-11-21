@@ -3,6 +3,7 @@ package com.project.mnm.controller;
 import com.project.mnm.domain.Response;
 import com.project.mnm.domain.User;
 import com.project.mnm.service.AuthService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ public class AuthController {
         Response response = new Response();
 
         try {
-            authService.joinUser(user);
             response.setResponse("success");
             response.setMessage("회원가입을 성공적으로 완료했습니다.");
+            response.setData(authService.joinUser(user));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -36,11 +37,9 @@ public class AuthController {
         Response response = new Response();
 
         try {
-            String jwtToken = authService.loginUser(user);
-
             response.setResponse("success");
             response.setMessage("로그인을 성공적으로 완료했습니다.");
-            response.setData(jwtToken);
+            response.setData(authService.loginUser(user));
         }
         catch (Exception e) {
             response.setResponse("failed");

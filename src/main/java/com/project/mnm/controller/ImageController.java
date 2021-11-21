@@ -3,17 +3,17 @@ package com.project.mnm.controller;
 import com.project.mnm.domain.Response;
 import com.project.mnm.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/user/image")
 @RestController
 public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @GetMapping("/image")
-    public Response getImage(@RequestParam("image_path") String imagePath) {
+    @GetMapping("")
+    public Response getImage(@RequestParam("imagePath") String imagePath) {
+        System.out.println("imagePath: " + imagePath);
         Response response = new Response();
 
         try {
