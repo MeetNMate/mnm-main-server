@@ -2,6 +2,7 @@ package com.project.mnm.service;
 
 import com.project.mnm.domain.Profile;
 import com.project.mnm.domain.User;
+import com.project.mnm.dto.ProfileInsertDto;
 import com.project.mnm.repository.ProfileRepository;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +25,21 @@ public class ProfileService {
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 등록되어있지 않습니다."));
     }
 
-    public Profile addProfile(String email, MultipartFile imageFile, String name, String sex, int age) throws Exception {
+    public Profile addProfile(String email, ProfileInsertDto profileInsertDto) throws Exception {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         if (!profileRepository.findByUser(user).isEmpty())
             throw new Exception("이미 프로필이 등록되어 있습니다.");
 
-        String imagePath = imageService.saveProfileImage(user.getId(), imageFile);
+//        String imagePath = imageService.saveProfileImage(user.getId(), profileInsertDto.getImageFile());
 
         return profileRepository.save(Profile.builder()
                 .user(user)
-                .image(imagePath)
-                .name(name)
-                .sex(sex)
-                .age(age)
+                .image("images/profile/5.jpg")
+                .name(profileInsertDto.getName())
+                .sex(profileInsertDto.getSex())
+                .age(profileInsertDto.getAge())
                 .description("저와 함께 살 멋쟁이를 구합니다.")
                 .build());
     }
