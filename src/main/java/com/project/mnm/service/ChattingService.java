@@ -4,6 +4,7 @@ import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.User;
 import com.project.mnm.domain.UserChatting;
+import com.project.mnm.dto.ChattingInsertDto;
 import com.project.mnm.dto.ChattingResponseDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.repository.ChattingRepository;
@@ -26,11 +27,29 @@ public class ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserChattingRepository userChattingRepository;
 
-    public Chatting chattingHandler(Chatting chatting) {
-        User user = userRepository.findById(chatting.getUser().getId())
+    public Chatting chattingHandler(Long cid, ChattingInsertDto chattingInsertDto) {
+        System.out.println(cid+""+chattingInsertDto);
+        User user = userRepository.findById(chattingInsertDto.getUid())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
+
+        userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 참여하고 있지 않습니다."));
+
+        Chatting chatting = new Chatting();
         chatting.setUser(user);
+        chatting.setChattingRoom(chattingRoom);
+        chatting.setMessage(chattingInsertDto.getMessage());
+        chatting.setSendAt(chattingInsertDto.getSendAt());
+        chatting.setIsRequest(chattingInsertDto.getIsRequest());
+
+        if (chatting.getIsRequest()) { // 메이트 요청일 경우
+            chattingRoom.setRequestAt(chatting.getSendAt());
+            chattingRoom.setRequestUser(user);
+            chattingRoom.setRequestSuccess(false);
+        }
 
         return chattingRepository.save(chatting);
     }
@@ -55,7 +74,7 @@ public class ChattingService {
         userChattingRepository.save(UserChatting.builder()
                 .user(receiver)
                 .chattingRoom(chattingRoom)
-                .lastAccessAt(now)
+                // 받는 사람은 lastAccessAt 일단 null
                 .build());
 
         return chattingRepository.save(Chatting.builder()
@@ -73,7 +92,7 @@ public class ChattingService {
 
         List<UserChatting> userChattings = userChattingRepository.findByUser(user);
 
-        // lastAccessAt으로 정렬
+        // lastAccessAt으로 정렬 -> JPA method로 변경하기
         userChattings.sort(new Comparator<UserChatting>() {
             @Override
             public int compare(UserChatting o1, UserChatting o2) {
@@ -118,24 +137,6 @@ public class ChattingService {
             chattingResponseDtos.add(chattingResponseDto);
         }
 
-
-
         return chattingResponseDtos;
-//        List<Chatting> chattings =  new ArrayList<>();
-//        chattings.addAll(chattingRepository.findByChattingRoom(chattingRoom));
-
-        // sendAt으로 정렬
-//        chattings.sort(new Comparator<Chatting>() {
-//            @Override
-//            public int compare(Chatting o1, Chatting o2) {
-//                Timestamp t1 = o1.getSendAt();
-//                Timestamp t2 = o2.getSendAt();
-//                if (t1 == t2) return 0;
-//                else if (t1.after(t1)) return 1;
-//                else return -1;
-//            }
-//        });
-
-//        return chattings;
     }
 }

@@ -3,12 +3,16 @@ package com.project.mnm.controller;
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.Response;
+import com.project.mnm.dto.ChattingInsertDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.service.ChattingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 public class ChattingController {
@@ -17,15 +21,17 @@ public class ChattingController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @MessageMapping("/receive")
-    @SendTo("/send")
-    public Chatting chattingHandler(Chatting chatting) {
-        return chattingService.chattingHandler(chatting);
+    @MessageMapping("/receive/{cid}")
+    @SendTo("/send/{cid}")
+    public Chatting chattingHandler(@DestinationVariable Long cid,
+                                    ChattingInsertDto chattingInsertDto) {
+        // 나중에 Dto 삭제해도 됨
+        return chattingService.chattingHandler(cid, chattingInsertDto);
     }
 
     @PostMapping("/chat")
     public Chatting makeChattingRoom(@RequestBody ChattingRoomInsertDto chattingRoomInsertDto) {
-        return chattingHandler(chattingService.makeChattingRoom(chattingRoomInsertDto));
+        return chattingService.makeChattingRoom(chattingRoomInsertDto);
     }
 
     @GetMapping("/user/chattingRoom")
