@@ -12,4 +12,5 @@ import java.util.List;
 public interface UserHouseRepository extends JpaRepository<UserHouse, Long> {
     UserHouse findByUserAndHouse(User user, House house);
     List<UserHouse> findAllByUser(User user);
+    List<UserHouse> findAllByHouse(House house);
 }
