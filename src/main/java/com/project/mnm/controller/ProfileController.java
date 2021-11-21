@@ -1,5 +1,6 @@
 package com.project.mnm.controller;
 
+import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.Response;
 import com.project.mnm.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("/{uid}")
-    public Response getProfile(@PathVariable("uid") Long uid) {
+    @GetMapping("")
+    public Response getProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
         Response response = new Response();
 
         try {
             response.setResponse("success");
             response.setMessage("프로필 조회를 성공적으로 완료했습니다.");
-            response.setData(profileService.getProfile(uid));
+            response.setData(profileService.getProfile(jwtTokenProvider.getUserPk(token)));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -31,7 +34,7 @@ public class ProfileController {
     }
 
     @PostMapping("")
-    public Response addProfile(@RequestParam("uid") Long uid,
+    public Response addProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token,
                                @RequestParam("image") MultipartFile imageFile,
                                @RequestParam("name") String name,
                                @RequestParam("sex") String sex,
@@ -39,9 +42,10 @@ public class ProfileController {
         Response response = new Response();
 
         try {
+            String email = jwtTokenProvider.getUserPk(token);
             response.setResponse("success");
             response.setMessage("프로필 등록을 성공적으로 완료했습니다.");
-            response.setData(profileService.addProfile(uid, imageFile, name, sex, age));
+            response.setData(profileService.addProfile(email, imageFile, name, sex, age));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -52,8 +56,8 @@ public class ProfileController {
         return response;
     }
 
-    @PutMapping("/{uid}")
-    public Response updateProfile(@PathVariable("uid") Long uid,
+    @PutMapping("")
+    public Response updateProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token,
                                   @RequestParam("image") MultipartFile imageFile,
                                   @RequestParam("name") String name,
                                   @RequestParam("sex") String sex,
@@ -63,9 +67,10 @@ public class ProfileController {
         Response response = new Response();
 
         try {
+            String email = jwtTokenProvider.getUserPk(token);
             response.setResponse("success");
             response.setMessage("프로필 수정을 성공적으로 완료했습니다.");
-            response.setData(profileService.updateProfile(uid, imageFile, name, sex, age, score, description));
+            response.setData(profileService.updateProfile(email, imageFile, name, sex, age, score, description));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -76,8 +81,8 @@ public class ProfileController {
         return response;
     }
 
-    @PatchMapping("/{uid}")
-    public Response editProfile(@PathVariable("uid") Long uid,
+    @PatchMapping("")
+    public Response editProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token,
                                   @RequestParam(value = "image", required = false) MultipartFile imageFile,
                                   @RequestParam(value = "name", required = false) String name,
                                   @RequestParam(value = "sex", required = false) String sex,
@@ -86,9 +91,10 @@ public class ProfileController {
         Response response = new Response();
 
         try {
+            String email = jwtTokenProvider.getUserPk(token);
             response.setResponse("success");
             response.setMessage("프로필 수정을 성공적으로 완료했습니다.");
-            response.setData(profileService.editProfile(uid, imageFile, name, sex, age, score));
+            response.setData(profileService.editProfile(email, imageFile, name, sex, age, score));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -99,11 +105,11 @@ public class ProfileController {
         return response;
     }
 
-    @DeleteMapping("/{uid}")
-    public Response deleteProfile(@PathVariable("uid") Long uid) {
+    @DeleteMapping("")
+    public Response deleteProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
         Response response = new Response();
 
-        profileService.deleteProfile(uid);
+        profileService.deleteProfile(jwtTokenProvider.getUserPk(token));
 
         try {
             response.setResponse("success");
