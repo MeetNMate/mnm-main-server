@@ -34,7 +34,10 @@ public class House {
     private int capacity;
     @ManyToOne
     @JoinColumn(name = "captain_id")
-    private User captain;
+    private User firstCaptain;
+    @ManyToOne
+    @JoinColumn(name = "captain_id")
+    private User secondCaptain;
     @Column(name = "location")
     private String location;
 }
