@@ -45,12 +45,6 @@ public class ChattingService {
         chatting.setSendAt(chattingInsertDto.getSendAt());
         chatting.setIsRequest(chattingInsertDto.getIsRequest());
 
-        if (chatting.getIsRequest()) { // 메이트 요청일 경우
-            chattingRoom.setRequestAt(chatting.getSendAt());
-            chattingRoom.setRequestUser(user);
-            chattingRoom.setRequestSuccess(false);
-        }
-
         return chattingRepository.save(chatting);
     }
 
@@ -138,5 +132,48 @@ public class ChattingService {
         }
 
         return chattingResponseDtos;
+    }
+
+    public Chatting sendRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        chattingRoom.setRequestAt(new Timestamp(System.currentTimeMillis()));
+        chattingRoom.setRequestUser(user);
+        chattingRoom.setRequestSuccess(false);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("☆저와 함꼐 하시죠☆")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(true)
+                .build());
+    }
+
+    public Chatting acceptRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        if (chattingRoom.getRequestUser() == null)
+            throw new Exception("요청이 없습니다.");
+
+        chattingRoom.setRequestSuccess(true);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("♡좋아요♡")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(false)
+                .build());
     }
 }
