@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_chatting")
-public class UserChatting {
+@Table(name = "user_house")
+public class UserHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,8 +20,14 @@ public class UserChatting {
     @JoinColumn(name = "uid")
     private User uid;
     @ManyToOne
-    @JoinColumn(name = "cid")
-    private ChattingRoom cid;
+    @JoinColumn(name = "hid")
+    private House hid;
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
+    @Column(name = "join_at")
+    private Timestamp joinAt;
+    @Column(name = "exit_at")
+    private Timestamp exitAt;
+    @Column(name = "is_eliminated")
+    private boolean isEliminated;
 }
