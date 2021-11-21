@@ -26,11 +26,18 @@ public class ChattingService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserChattingRepository userChattingRepository;
 
-    public Chatting chattingHandler(Chatting chatting) {
+    public Chatting chattingHandler(Long cid, Chatting chatting) {
         User user = userRepository.findById(chatting.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
+
+        userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 참여하고 있지 않습니다."));
+
         chatting.setUser(user);
+        chatting.setChattingRoom(chattingRoom);
 
         return chattingRepository.save(chatting);
     }
@@ -55,7 +62,7 @@ public class ChattingService {
         userChattingRepository.save(UserChatting.builder()
                 .user(receiver)
                 .chattingRoom(chattingRoom)
-                .lastAccessAt(now)
+                // 받는 사람은 lastAccessAt 일단 null
                 .build());
 
         return chattingRepository.save(Chatting.builder()
@@ -73,7 +80,7 @@ public class ChattingService {
 
         List<UserChatting> userChattings = userChattingRepository.findByUser(user);
 
-        // lastAccessAt으로 정렬
+        // lastAccessAt으로 정렬 -> JPA method로 변경하기
         userChattings.sort(new Comparator<UserChatting>() {
             @Override
             public int compare(UserChatting o1, UserChatting o2) {
@@ -118,24 +125,73 @@ public class ChattingService {
             chattingResponseDtos.add(chattingResponseDto);
         }
 
-
-
         return chattingResponseDtos;
-//        List<Chatting> chattings =  new ArrayList<>();
-//        chattings.addAll(chattingRepository.findByChattingRoom(chattingRoom));
+    }
 
-        // sendAt으로 정렬
-//        chattings.sort(new Comparator<Chatting>() {
-//            @Override
-//            public int compare(Chatting o1, Chatting o2) {
-//                Timestamp t1 = o1.getSendAt();
-//                Timestamp t2 = o2.getSendAt();
-//                if (t1 == t2) return 0;
-//                else if (t1.after(t1)) return 1;
-//                else return -1;
-//            }
-//        });
+    public Chatting sendRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
-//        return chattings;
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        chattingRoom.setRequestAt(new Timestamp(System.currentTimeMillis()));
+        chattingRoom.setRequestUser(user);
+        chattingRoom.setRequestSuccess(false);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("☆저와 함꼐 하시죠☆")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(true)
+                .build());
+    }
+
+    public Chatting acceptRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        if (chattingRoom.getRequestUser() == null)
+            throw new Exception("요청이 없습니다.");
+
+        chattingRoom.setRequestSuccess(true);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("♡좋아요♡")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(false)
+                .build());
+    }
+
+    public Chatting declineRequest(String email, Long cid) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
+                .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        if (chattingRoom.getRequestUser() == null)
+            throw new Exception("요청이 없습니다.");
+
+        chattingRoom.setRequestAt(null);
+        chattingRoom.setRequestUser(null);
+        chattingRoom.setRequestSuccess(false);
+        chattingRoomRepository.save(chattingRoom);
+
+        return chattingRepository.save(Chatting.builder()
+                .user(user)
+                .chattingRoom(chattingRoom)
+                .message("죄송합니다ㅠㅠ")
+                .sendAt(new Timestamp(System.currentTimeMillis()))
+                .isRequest(false)
+                .build());
     }
 }
