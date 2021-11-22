@@ -9,8 +9,4 @@ import java.util.List;
 
 @Repository
 public interface HouseRepository extends JpaRepository<House, Long> {
-
-    @Query(value = "select h from House h where h.captainId = ?1")
-    List<House> findHousesByUserId(long uid);
-
 }
