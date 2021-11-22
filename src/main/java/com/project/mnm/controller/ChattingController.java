@@ -7,7 +7,6 @@ import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.dto.SocketSessionInsertDto;
 import com.project.mnm.service.ChattingService;
 import com.project.mnm.service.SocketSessionService;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -63,6 +62,25 @@ public class ChattingController {
         catch (Exception e) {
             response.setResponse("failed");
             response.setMessage("채팅방 조회를 하는 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
+
+    @GetMapping("/user/chattingRoom/{cid}/latest")
+    public Response getChattingRoomLatest(@RequestHeader(value = "X-AUTH-TOKEN") String token,
+                                          @PathVariable("cid") Long cid) {
+        Response response = new Response();
+
+        try {
+            response.setResponse("success");
+            response.setMessage("채팅방 최신 정보 조회를 성공적으로 완료했습니다.");
+            response.setData(chattingService.getChattingRoomLatest(jwtTokenProvider.getUserPk(token), cid));
+        }
+        catch (Exception e) {
+            response.setResponse("failed");
+            response.setMessage("채팅방 최신 정보 조회를 하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
 
