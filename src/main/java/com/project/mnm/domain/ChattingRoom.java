@@ -22,5 +22,6 @@ public class ChattingRoom {
     @JoinColumn(name = "request_uid")
     private User requestUser;
     @Column(name = "request_success")
-    private boolean requestSuccess;
+    private Boolean requestSuccess;
+
 }
