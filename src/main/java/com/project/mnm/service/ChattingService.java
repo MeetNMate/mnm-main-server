@@ -152,6 +152,9 @@ public class ChattingService {
         ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
                 .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
 
+        if (chattingRoom.getRequestUser() != null)
+            throw new Exception("이미 요청이 존재합니다.");
+
         chattingRoom.setRequestAt(new Timestamp(System.currentTimeMillis()));
         chattingRoom.setRequestUser(user);
         chattingRoom.setRequestSuccess(false);
