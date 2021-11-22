@@ -23,22 +23,13 @@ public class HouseController {
 
     @PostMapping("")
     public Response createHouse(@RequestBody HouseInsertDto houseDto) {
-        Response response = new Response();
-        House house = new House();
-        house.setDescription(houseDto.getDescription());
-        house.setCapacity(houseDto.getCapacity());
-//        User user = UserRepository.
-//        house.setCaptainId(houseDto.getCaptainId());
-        house.setLocation(houseDto.getLocation());
-
+        Response response;
         try {
-            response.setResponse("success");
-            response.setMessage("하우스 생성을 성공적으로 완료했습니다.");
-            response.setData(houseService.createdHouse(house));
+            String message = "하우스 생성을 성공적으로 완료했습니다.";
+            response = new Response("success", message, houseService.createdHouse(houseDto));
         } catch (Exception e) {
-            response.setResponse("failed");
-            response.setMessage("하우스 생성을 하는 도중 오류가 발생했습니다.");
-            response.setData(e.toString());
+            String message = "하우스 생성을 하는 도중 오류가 발생했습니다.";
+            response = new Response("failed", message, e.toString());
         }
 
         return response;
@@ -56,7 +47,6 @@ public class HouseController {
         }
         return response;
     }
-
 
     @GetMapping("/{id}")
     @ResponseBody
