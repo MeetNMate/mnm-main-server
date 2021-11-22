@@ -13,8 +13,8 @@ public class MatchingInfoService {
     private final MatchingInfoRepository matchingInfoRepository;
     private final UserRepository userRepository;
 
-    public MatchingInfo getMatchingInfo(String email) {
-        User user = userRepository.findByEmail(email)
+    public MatchingInfo getMatchingInfo(Long uid) {
+        User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
         return matchingInfoRepository.findByUser(user)
@@ -29,6 +29,8 @@ public class MatchingInfoService {
             throw new Exception("이미 매칭정보가 등록되어 있습니다.");
 
         info.setUser(user);
+
+        System.out.println(info);
 
         return matchingInfoRepository.save(info);
     }

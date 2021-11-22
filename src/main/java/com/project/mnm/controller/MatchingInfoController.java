@@ -15,15 +15,14 @@ public class MatchingInfoController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("")
-    public Response getMatchingInfo(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
+    @GetMapping("/{uid}")
+    public Response getMatchingInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
-        System.out.println(token);
 
         try {
             response.setResponse("success");
             response.setMessage("매칭정보 조회를 성공적으로 완료했습니다.");
-            response.setData(matchingInfoService.getMatchingInfo(jwtTokenProvider.getUserPk(token)));
+            response.setData(matchingInfoService.getMatchingInfo(uid));
         }
         catch (Exception e) {
             response.setResponse("failed");

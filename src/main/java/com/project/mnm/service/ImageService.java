@@ -69,7 +69,8 @@ public class ImageService {
             imageFile.transferTo(file);
         }
         else {
-            throw new Exception("이미지 파일이 비어있습니다.");
+            imagePath = "images/profile/default.png";
+//            throw new Exception("이미지 파일이 비어있습니다.");
         }
 
         return imagePath;
