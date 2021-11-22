@@ -45,6 +45,12 @@ public class ChattingController {
         return chattingService.makeChattingRoom(chattingRoomInsertDto);
     }
 
+    @GetMapping("/chattingRoom/exist")
+    public Boolean isExisted(@RequestParam("senderUid") Long senderUid,
+                             @RequestParam("receiverUid") Long receiverUid) {
+        return chattingService.isExisted(senderUid, receiverUid);
+    }
+
     @GetMapping("/user/chattingRoom")
     public Response getChattingRoomList(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
         Response response = new Response();

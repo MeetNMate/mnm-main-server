@@ -74,6 +74,23 @@ public class ChattingService {
                 .build());
     }
 
+    public Boolean isExisted(Long sid, Long rid) {
+        User sender = userRepository.findById(sid)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        User receiver = userRepository.findById(rid)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        List<UserChatting> userChattings = userChattingRepository.findByUser(sender);
+
+        for (UserChatting userChatting : userChattings) {
+             for(UserChatting uc : userChattingRepository.findByChattingRoom(userChatting.getChattingRoom())) {
+                 if (uc.getUser() == receiver) return true;
+             }
+        }
+        return false;
+    }
+
     public List<ChattingRoom> getChattingRoomList(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
