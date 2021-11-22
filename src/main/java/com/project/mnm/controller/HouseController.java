@@ -45,17 +45,16 @@ public class HouseController {
     }
 
     @GetMapping("")
-    public Response readAllHouse() {
-//        User user = new User();
-//        Response response;
-//        try {
-//            String message = "하우스 목록 조회를 성공적으로 완료했습니다.";
-//            response = new Response("success", message, houseService.findHouseByUserId(user.getId()));
-//        } catch (Exception e) {
-//            String message = "하우스 목록 조회를 하는 도중 오류가 발생했습니다.";
-//            response = new Response("failed", message, e.toString());
-//        }
-        return null;
+    public Response readAllHouse(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
+        Response response;
+        try {
+            String message = "하우스 목록 조회를 성공적으로 완료했습니다.";
+            response = new Response("success", message, userHouseService.getAllHouseByUser(token));
+        } catch (Exception e) {
+            String message = "하우스 목록 조회를 하는 도중 오류가 발생했습니다.";
+            response = new Response("failed", message, e.toString());
+        }
+        return response;
     }
 
 
