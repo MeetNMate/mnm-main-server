@@ -25,7 +25,7 @@ public class HouseService {
         return houseRepository.findById(id);
     }
 
-    public List<House> findHouseByUserId(long id){
-        return houseRepository.findHousesByUserId(id);
-    }
+//    public List<House> findHouseByUserId(long id){
+//        return houseRepository.findHousesByUserId(id);
+//    }
 }
