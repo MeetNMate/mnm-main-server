@@ -179,6 +179,9 @@ public class ChattingService {
         if (chattingRoom.getRequestUser() == null)
             throw new Exception("요청이 없습니다.");
 
+        if (chattingRoom.getRequestUser() == user)
+            throw new Exception("요청을 보낸 사용자는 요청에 응답할 수 없습니다.");
+
         chattingRoom.setRequestSuccess(true);
         chattingRoomRepository.save(chattingRoom);
 
@@ -200,6 +203,12 @@ public class ChattingService {
 
         if (chattingRoom.getRequestUser() == null)
             throw new Exception("요청이 없습니다.");
+
+        if (chattingRoom.getRequestSuccess() == true)
+            throw new Exception("이미 요청이 승인되었습니다.");
+
+        if (chattingRoom.getRequestUser() == user)
+            throw new Exception("요청을 보낸 사용자는 요청에 응답할 수 없습니다.");
 
         chattingRoom.setRequestAt(null);
         chattingRoom.setRequestUser(null);
