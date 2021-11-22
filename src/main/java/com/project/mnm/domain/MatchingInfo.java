@@ -61,7 +61,7 @@ public class MatchingInfo {
     private int userBugKiller;
     @Column(name = "mate_bug_killer")
     private int mateBugKiller;
-    @Column(name = "usesr_cooking")
+    @Column(name = "user_cooking")
     private int userCooking;
     @Column(name = "mate_cooking")
     private int mateCooking;
@@ -75,4 +75,10 @@ public class MatchingInfo {
     private int mateClean;
     @Column(name = "permission_to_enter")
     private int permissionToEnter;
+    @Column(name = "noise_talking")
+    private int noiseTalking;
+    @Column(name = "noise_music")
+    private int noiseMusic;
+    @Column(name = "noise_alarm")
+    private int noiseAlarm;
 }

@@ -11,6 +11,7 @@ import com.project.mnm.repository.ChattingRoomRepository;
 import com.project.mnm.repository.UserChattingRepository;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -74,6 +75,23 @@ public class ChattingService {
                 .build());
     }
 
+    public Boolean isExisted(Long sid, Long rid) {
+        User sender = userRepository.findById(sid)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        User receiver = userRepository.findById(rid)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        List<UserChatting> userChattings = userChattingRepository.findByUser(sender);
+
+        for (UserChatting userChatting : userChattings) {
+             for(UserChatting uc : userChattingRepository.findByChattingRoom(userChatting.getChattingRoom())) {
+                 if (uc.getUser() == receiver) return true;
+             }
+        }
+        return false;
+    }
+
     public List<ChattingRoom> getChattingRoomList(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
@@ -102,6 +120,30 @@ public class ChattingService {
         return chattingRooms;
     }
 
+    public JSONObject getChattingRoomLatest(String email, Long cid) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        ChattingRoom chattingRoom = chattingRoomRepository.getById(cid);
+
+        UserChatting userChatting = userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 들어있지 않습니다."));
+
+        JSONObject jsonObject = new JSONObject();
+        Chatting latestChatting = chattingRepository.findTopByChattingRoomOrderBySendAtDesc(chattingRoom);
+        List<UserChatting> userChattings = userChattingRepository.findByChattingRoom(chattingRoom);
+        for (UserChatting uc : userChattings) {
+            if (uc.getUser() != user) jsonObject.put("uid", uc.getUser().getId());
+        }
+        jsonObject.put("sendAt", latestChatting.getSendAt());
+        jsonObject.put("message", latestChatting.getMessage());
+        // greater than 이 정상 실행이 안돼서 일단 구현만 함
+        // chattingRoomLatestDto.setNumber(chattingRepository.findByChattingRoomAndSendAtGreaterThan(chattingRoom, userChatting.getLastAccessAt()).size());
+        jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size() - chattingRepository.findByChattingRoomAndSendAtLessThan(chattingRoom, userChatting.getLastAccessAt()).size());
+
+        return jsonObject;
+    }
+
     public List<ChattingResponseDto> getChattingList(String email, Long cid) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
@@ -111,7 +153,7 @@ public class ChattingService {
         userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 들어있지 않습니다."));
 
-        List<Chatting> chattings = chattingRepository.findByChattingRoomOrderBySendAtDesc(chattingRoom);
+        List<Chatting> chattings = chattingRepository.findByChattingRoomOrderBySendAtAsc(chattingRoom);
 
         List<ChattingResponseDto> chattingResponseDtos = new ArrayList<>();
 
@@ -134,6 +176,9 @@ public class ChattingService {
 
         ChattingRoom chattingRoom = chattingRoomRepository.findById(cid)
                 .orElseThrow(() -> new IllegalArgumentException("채팅 방을 찾을 수 없습니다."));
+
+        if (chattingRoom.getRequestUser() != null)
+            throw new Exception("이미 요청이 존재합니다.");
 
         chattingRoom.setRequestAt(new Timestamp(System.currentTimeMillis()));
         chattingRoom.setRequestUser(user);
@@ -159,6 +204,9 @@ public class ChattingService {
         if (chattingRoom.getRequestUser() == null)
             throw new Exception("요청이 없습니다.");
 
+        if (chattingRoom.getRequestUser() == user)
+            throw new Exception("요청을 보낸 사용자는 요청에 응답할 수 없습니다.");
+
         chattingRoom.setRequestSuccess(true);
         chattingRoomRepository.save(chattingRoom);
 
@@ -180,6 +228,12 @@ public class ChattingService {
 
         if (chattingRoom.getRequestUser() == null)
             throw new Exception("요청이 없습니다.");
+
+        if (chattingRoom.getRequestSuccess() == true)
+            throw new Exception("이미 요청이 승인되었습니다.");
+
+        if (chattingRoom.getRequestUser() == user)
+            throw new Exception("요청을 보낸 사용자는 요청에 응답할 수 없습니다.");
 
         chattingRoom.setRequestAt(null);
         chattingRoom.setRequestUser(null);
