@@ -10,7 +10,7 @@ import lombok.ToString;
 public class HouseInsertDto {
     private String description;
     private int capacity;
-    private int captainId;
+    private long chattingRoomId;
     private String location;
     private String name;
 }
