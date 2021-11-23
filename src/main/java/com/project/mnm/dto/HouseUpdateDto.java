@@ -7,10 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class HouseInsertDto {
+public class HouseUpdateDto {
     private String description;
     private int capacity;
-    private long chattingRoomId;
     private String location;
     private String name;
 }
