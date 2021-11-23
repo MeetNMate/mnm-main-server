@@ -6,6 +6,7 @@ import com.project.mnm.domain.User;
 import com.project.mnm.domain.UserChatting;
 import com.project.mnm.dto.ChattingResponseDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
+import com.project.mnm.dto.ChattingRoomLatestResponseDto;
 import com.project.mnm.repository.ChattingRepository;
 import com.project.mnm.repository.ChattingRoomRepository;
 import com.project.mnm.repository.UserChattingRepository;
@@ -120,7 +121,7 @@ public class ChattingService {
         return chattingRooms;
     }
 
-    public JSONObject getChattingRoomLatest(String email, Long cid) {
+    public ChattingRoomLatestResponseDto getChattingRoomLatest(String email, Long cid) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -129,25 +130,25 @@ public class ChattingService {
         UserChatting userChatting = userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 들어있지 않습니다."));
 
-        JSONObject jsonObject = new JSONObject();
+        ChattingRoomLatestResponseDto chattingRoomLatestResponseDto = new ChattingRoomLatestResponseDto();
         Chatting latestChatting = chattingRepository.findTopByChattingRoomOrderBySendAtDesc(chattingRoom);
         List<UserChatting> userChattings = userChattingRepository.findByChattingRoom(chattingRoom);
         for (UserChatting uc : userChattings) {
-            if (uc.getUser() != user) jsonObject.put("uid", uc.getUser().getId());
+            if (uc.getUser() != user) chattingRoomLatestResponseDto.setUid(uc.getUser().getId());
         }
-        jsonObject.put("sendAt", latestChatting.getSendAt());
-        jsonObject.put("message", latestChatting.getMessage());
+        chattingRoomLatestResponseDto.setSendAt(latestChatting.getSendAt());
+        chattingRoomLatestResponseDto.setMessage(latestChatting.getMessage());
         // greater than 이 정상 실행이 안돼서 일단 구현만 함
         // chattingRoomLatestDto.setNumber(chattingRepository.findByChattingRoomAndSendAtGreaterThan(chattingRoom, userChatting.getLastAccessAt()).size());
         System.out.println("-------------------1");
         if (userChatting.getLastAccessAt() == null) {
-            jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size());
+            chattingRoomLatestResponseDto.setNumber(chattingRepository.findByChattingRoom(chattingRoom).size());
         }
         else {
-            jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size() - chattingRepository.findByChattingRoomAndSendAtLessThan(chattingRoom, userChatting.getLastAccessAt()).size());
+            chattingRoomLatestResponseDto.setNumber(chattingRepository.findByChattingRoom(chattingRoom).size() - chattingRepository.findByChattingRoomAndSendAtLessThan(chattingRoom, userChatting.getLastAccessAt()).size());
         }
 
-        return jsonObject;
+        return chattingRoomLatestResponseDto;
     }
 
     public List<ChattingResponseDto> getChattingList(String email, Long cid) {
