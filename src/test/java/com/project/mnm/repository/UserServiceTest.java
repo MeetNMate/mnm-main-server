@@ -23,6 +23,6 @@ public class UserServiceTest {
 
     @Test
     public void signUp() throws Exception {
-        userService.joinUser(user);
+//        userService.joinUser(user);
     }
 }

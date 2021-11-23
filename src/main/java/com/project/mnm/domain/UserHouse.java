@@ -18,10 +18,10 @@ public class UserHouse {
     private long id;
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "hid")
-    private House hid;
+    private House house;
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
     @Column(name = "join_at")
