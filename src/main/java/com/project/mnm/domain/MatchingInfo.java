@@ -52,7 +52,7 @@ public class MatchingInfo {
     @Column(name = "mate_pet_bird")
     private int matePetBird;
     @Column(name = "mate_pet_etc")
-    private int matePetEtc;
+    private String matePetEtc;
     @Column(name = "air_like_airconditioner")
     private int airLikeAirconditioner;
     @Column(name = "air_like_heater")
