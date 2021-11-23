@@ -12,7 +12,6 @@ import com.project.mnm.repository.ChattingRoomRepository;
 import com.project.mnm.repository.UserChattingRepository;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
