@@ -139,7 +139,13 @@ public class ChattingService {
         jsonObject.put("message", latestChatting.getMessage());
         // greater than 이 정상 실행이 안돼서 일단 구현만 함
         // chattingRoomLatestDto.setNumber(chattingRepository.findByChattingRoomAndSendAtGreaterThan(chattingRoom, userChatting.getLastAccessAt()).size());
-        jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size() - chattingRepository.findByChattingRoomAndSendAtLessThan(chattingRoom, userChatting.getLastAccessAt()).size());
+        System.out.println("-------------------1");
+        if (userChatting.getLastAccessAt() == null) {
+            jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size());
+        }
+        else {
+            jsonObject.put("number", chattingRepository.findByChattingRoom(chattingRoom).size() - chattingRepository.findByChattingRoomAndSendAtLessThan(chattingRoom, userChatting.getLastAccessAt()).size());
+        }
 
         return jsonObject;
     }
