@@ -2,15 +2,19 @@ package com.project.mnm.service;
 
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.HouseRole;
+import com.project.mnm.domain.Profile;
 import com.project.mnm.domain.User;
 import com.project.mnm.dto.HouseRoleInsertDto;
+import com.project.mnm.dto.HouseRoleResponseDto;
 import com.project.mnm.dto.HouseRoleUpdateDto;
 import com.project.mnm.repository.HouseRepository;
 import com.project.mnm.repository.HouseRoleRepository;
+import com.project.mnm.repository.ProfileRepository;
 import com.project.mnm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,12 +22,14 @@ public class HouseRoleService {
     private final HouseRoleRepository houseRoleRepository;
     private final HouseRepository houseRepository;
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
     @Autowired
-    public HouseRoleService(HouseRoleRepository houseRoleRepository, HouseRepository houseRepository, UserRepository userRepository) {
+    public HouseRoleService(HouseRoleRepository houseRoleRepository, HouseRepository houseRepository, UserRepository userRepository, ProfileRepository profileRepository) {
         this.houseRoleRepository = houseRoleRepository;
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     public HouseRole createHouseRole(HouseRoleInsertDto dto) {
@@ -43,11 +49,22 @@ public class HouseRoleService {
         return houseRoleRepository.save(houseRole);
     }
 
-    public List<HouseRole> findHouseRolesByHouseId(long houseId) {
-        return houseRoleRepository.findByHouse(houseRepository.findById(houseId));
+    public List<HouseRoleResponseDto> findHouseRolesByHouseId(long houseId) {
+        List<HouseRoleResponseDto> results = new ArrayList<>();
+        List<HouseRole> list = houseRoleRepository.findByHouse(houseRepository.findById(houseId));
+        for (HouseRole role : list) {
+            HouseRoleResponseDto dto = new HouseRoleResponseDto();
+            dto.setId(role.getId());
+            Profile profile = profileRepository.findByUser(role.getUser())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+            dto.setUserName(profile.getName());
+            dto.setRole(role.getRole());
+            results.add(dto);
+        }
+        return results;
     }
 
-    public HouseRole updateHouseRule(long roleId, HouseRoleUpdateDto dto) {
+    public HouseRole updateHouseRole(long roleId, HouseRoleUpdateDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
         HouseRole houseRole = houseRoleRepository.findById(roleId)
@@ -63,7 +80,7 @@ public class HouseRoleService {
         return houseRoleRepository.save(houseRole);
     }
 
-    public void deleteHouseRule(long roleId) {
+    public void deleteHouseRole(long roleId) {
         HouseRole houseRole = houseRoleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재한지 않는 룰입니다."));
         houseRoleRepository.delete(houseRole);

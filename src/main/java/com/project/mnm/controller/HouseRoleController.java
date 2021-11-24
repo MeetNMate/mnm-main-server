@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user/role")
+@RequestMapping("/role")
 public class HouseRoleController {
     private final HouseRoleService houseRoleService;
 
@@ -48,7 +48,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 수정을 성공적으로 완료했습니다.";
-            response = new Response("success", message, houseRoleService.updateHouseRule(roleId, dto));
+            response = new Response("success", message, houseRoleService.updateHouseRole(roleId, dto));
         } catch (Exception e) {
             String message = "하우스 롤을 수정하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
@@ -61,7 +61,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 삭제를 성공적으로 완료했습니다.";
-            houseRoleService.deleteHouseRule(roleId);
+            houseRoleService.deleteHouseRole(roleId);
             response = new Response("success", message, "");
         } catch (Exception e) {
             String message = "하우스 롤을 삭제하는 도중 오류가 발생했습니다.";
