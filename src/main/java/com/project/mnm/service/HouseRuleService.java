@@ -3,14 +3,17 @@ package com.project.mnm.service;
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.HouseRule;
 import com.project.mnm.domain.User;
-import com.project.mnm.dto.HouseRuleInsertDto;
-import com.project.mnm.dto.HouseRuleUpdateDto;
+import com.project.mnm.dto.house.role.HouseRoleResponseDto;
+import com.project.mnm.dto.house.rule.HouseRuleInsertDto;
+import com.project.mnm.dto.house.rule.HouseRuleResponseDto;
+import com.project.mnm.dto.house.rule.HouseRuleUpdateDto;
 import com.project.mnm.repository.HouseRepository;
 import com.project.mnm.repository.HouseRuleRepository;
 import com.project.mnm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,8 +46,14 @@ public class HouseRuleService {
         return houseRuleRepository.save(houseRule);
     }
 
-    public List<HouseRule> findHouseRulesByHouseId(long houseId) {
-        return houseRuleRepository.findByHouse(houseRepository.findById(houseId));
+    public List<HouseRuleResponseDto> findHouseRulesByHouseId(long houseId) {
+        List<HouseRule> rules = houseRuleRepository.findByHouse(houseRepository.findById(houseId));
+        List<HouseRuleResponseDto> results = new ArrayList<>();
+        for (HouseRule rule : rules) {
+            HouseRuleResponseDto dto = new HouseRuleResponseDto(rule.getId(), rule.getHouse().getId(), rule.getOriginalRule(), rule.getUpperNum(), rule.getLowerNum());
+            results.add(dto);
+        }
+        return results;
     }
 
     public HouseRule updateHouseRule(long ruleId, HouseRuleUpdateDto dto) {

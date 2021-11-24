@@ -2,8 +2,8 @@ package com.project.mnm.controller;
 
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.Response;
-import com.project.mnm.dto.HouseInsertDto;
-import com.project.mnm.dto.HouseUpdateDto;
+import com.project.mnm.dto.house.lobby.HouseInsertDto;
+import com.project.mnm.dto.house.lobby.HouseUpdateDto;
 import com.project.mnm.service.HouseService;
 import com.project.mnm.service.UserHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/house")
+@RequestMapping("/house")
 public class HouseController {
     private final HouseService houseService;
     private final UserHouseService userHouseService;
