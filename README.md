@@ -1,6 +1,4 @@
-# project-mnm-server
-
-숭실대학교 캡스톤 디자인 프로젝트 졸업 작품
+# Meet & Mate Main Server
 
 ## Conventions
 
@@ -13,7 +11,7 @@
 브랜치는 다음과 같이 명명합니다.
 
 - feature/작업날짜6자리-기능명-본인식별문자열
-- 예) feature/210901-add-main-page-song
+- 예) feature/210901-add-edit-house-song
 
 ### Commit Convention
 
