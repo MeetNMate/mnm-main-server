@@ -4,6 +4,11 @@
 
 협업규약을 지켜주세요.
 
+## contributors
+<a href="https://github.com/MeetNMate/mnm-main-server/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MeetNMate/mnm-main-server" />
+</a>
+
 ### Branch Convention
 
 현재 보호되고 있는 브랜치는 develop과 master 이며, master는 배포용입니다.
