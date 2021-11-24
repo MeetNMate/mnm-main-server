@@ -28,3 +28,37 @@
 ### PR Convention
 
 - approve는 1명 이상.
+
+### Code Convention
+
+#### Controller
+
+- *** List() : 목록 조회의 경우
+- *** Details() : 특정 데이터의 조회의 경우
+- *** Save() : CUD 가 동시에 일어나는 경우
+- *** Add() : 등록만 하는 경우
+- *** Modify() : 수정만 하는 경우
+- *** Remove() : 삭제만 하는 경우
+
+컨트롤러에서는 Service의 호출과 Exception 처리만 이루어져야 합니다.
+
+#### Service
+
+- find ***() : 조회 유형일 경우
+- add ***() : 등록 유형일 경우
+- modify ***() : 변경 유형일 경우
+- remove ***() : 삭제 유혈일 경우
+- save ***() CRD 가 동시에 일어나는 경우
+
+도메인명의 Service의 생성을 피해야합니다.
+
+#### Mapper
+
+- select ***() : 조회 유형일 경우
+- insert ***() : 등록 유형일 경우
+- update ***() : 변경 유형일 경우
+- delete ***() : 삭제 유혈일 경우
+
+#### DTO
+
+- https://tecoble.techcourse.co.kr/post/2020-09-20-validation-in-spring-boot/
