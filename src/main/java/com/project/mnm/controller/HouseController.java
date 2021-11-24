@@ -1,5 +1,6 @@
 package com.project.mnm.controller;
 
+import com.project.mnm.domain.House;
 import com.project.mnm.domain.Response;
 import com.project.mnm.dto.HouseInsertDto;
 import com.project.mnm.dto.HouseUpdateDto;
@@ -7,6 +8,8 @@ import com.project.mnm.service.HouseService;
 import com.project.mnm.service.UserHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/house")
@@ -38,8 +41,14 @@ public class HouseController {
     public Response readAllHouse(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
         Response response;
         try {
-            String message = "하우스 목록 조회를 성공적으로 완료했습니다.";
-            response = new Response("success", message, userHouseService.getAllHouseByUser(token));
+            String message;
+            List<House> result = userHouseService.getAllHouseByUser(token);
+            if (result == null) {
+                message = "소속된 하우스가 없습니다.";
+            } else {
+                message = "하우스 목록 조회를 성공적으로 완료했습니다.";
+            }
+            response = new Response("success", message, result);
         } catch (Exception e) {
             String message = "하우스 목록 조회를 하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
