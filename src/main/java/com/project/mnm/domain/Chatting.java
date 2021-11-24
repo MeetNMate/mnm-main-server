@@ -1,6 +1,7 @@
 package com.project.mnm.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ public class Chatting {
     private User user;
     @Column(name = "message")
     private String message;
+    @CreationTimestamp
     @Column(name = "send_at")
     private Timestamp sendAt;
     @Column(name = "is_request")
