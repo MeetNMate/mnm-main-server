@@ -29,20 +29,21 @@ public class UserHouseService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public House addUserToHouse(long houseId, long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
-        House house = houseRepository.findById(houseId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 하우스입니다."));
-        UserHouse userHouse = new UserHouse();
-        userHouse.setHouse(house);
-        userHouse.setUser(user);
-        userHouse.setEliminated(false);
-        userHouseRepository.save(userHouse);
-        return house;
-    }
+    // 현재 HouseService에서 대체하여 사용중 입니다.
+//    public House addUserToHouse(long houseId, long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+//        House house = houseRepository.findById(houseId)
+//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 하우스입니다."));
+//        UserHouse userHouse = new UserHouse();
+//        userHouse.setHouse(house);
+//        userHouse.setUser(user);
+//        userHouse.setEliminated(false);
+//        userHouseRepository.save(userHouse);
+//        return house;
+//    }
 
-    public void exitUserFromHouse(long houseId, String token){
+    public void exitUserFromHouse(long houseId, String token) {
         String userEmail = jwtTokenProvider.getUserPk(token);
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
@@ -52,18 +53,18 @@ public class UserHouseService {
         userHouse.setExitAt(new Timestamp(System.currentTimeMillis()));
         userHouseRepository.save(userHouse);
         // 평가를 완료하면 true로 변경된다
-
     }
 
-    public List<House> getAllHouseByUser(String token){
+    public List<House> getAllHouseByUser(String token) {
         String userEmail = jwtTokenProvider.getUserPk(token);
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
-
         List<UserHouse> list = userHouseRepository.findAllByUser(user);
         List<House> houseList = new ArrayList<>();
-
-        for(UserHouse item: list){
+        if (list == null) {
+            return null;
+        }
+        for (UserHouse item : list) {
             houseList.add(item.getHouse());
         }
         return houseList;
