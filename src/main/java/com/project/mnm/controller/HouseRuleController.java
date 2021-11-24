@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/rule")
+@RequestMapping("/user/rule")
 public class HouseRuleController {
     private final HouseRuleService houseRuleService;
 

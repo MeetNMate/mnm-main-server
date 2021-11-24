@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/house")
+@RequestMapping("/user/house")
 public class HouseController {
     private final HouseService houseService;
     private final UserHouseService userHouseService;
