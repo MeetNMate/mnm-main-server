@@ -1,14 +1,14 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.domain.Response;
-import com.project.mnm.dto.HouseRuleInsertDto;
-import com.project.mnm.dto.HouseRuleUpdateDto;
+import com.project.mnm.dto.house.rule.HouseRuleInsertDto;
+import com.project.mnm.dto.house.rule.HouseRuleUpdateDto;
 import com.project.mnm.service.HouseRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user/rule")
+@RequestMapping("/rule")
 public class HouseRuleController {
     private final HouseRuleService houseRuleService;
 

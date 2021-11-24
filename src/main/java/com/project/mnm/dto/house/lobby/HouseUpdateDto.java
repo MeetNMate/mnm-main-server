@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.house.lobby;
 
 import lombok.Getter;
 import lombok.Setter;

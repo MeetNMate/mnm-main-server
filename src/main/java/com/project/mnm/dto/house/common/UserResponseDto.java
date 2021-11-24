@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.house.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

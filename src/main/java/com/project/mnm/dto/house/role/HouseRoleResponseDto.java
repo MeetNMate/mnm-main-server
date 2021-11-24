@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.house.role;
 
 import com.project.mnm.domain.Profile;
 import lombok.Getter;

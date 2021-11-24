@@ -1,6 +1,6 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.house.lobby;
 
-import com.project.mnm.domain.Profile;
+import com.project.mnm.dto.house.common.UserResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

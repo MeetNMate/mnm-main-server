@@ -2,15 +2,17 @@ package com.project.mnm.service;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.*;
-import com.project.mnm.dto.HouseInsertDto;
-import com.project.mnm.dto.HouseUpdateDto;
+import com.project.mnm.dto.house.lobby.HouseInsertDto;
+import com.project.mnm.dto.house.lobby.HouseResponseDto;
+import com.project.mnm.dto.house.lobby.HouseUpdateDto;
+import com.project.mnm.dto.house.common.UserResponseDto;
 import com.project.mnm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HouseService {
@@ -20,15 +22,17 @@ public class HouseService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final UserChattingRepository userChattingRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ProfileRepository profileRepository;
 
     @Autowired
-    public HouseService(HouseRepository houseRepository, UserHouseRepository userHouseRepository, UserRepository userRepository, ChattingRepository chattingRepository, ChattingRoomRepository chattingRoomRepository, UserChattingRepository userChattingRepository, JwtTokenProvider jwtTokenProvider) {
+    public HouseService(HouseRepository houseRepository, UserHouseRepository userHouseRepository, UserRepository userRepository, ChattingRepository chattingRepository, ChattingRoomRepository chattingRoomRepository, UserChattingRepository userChattingRepository, JwtTokenProvider jwtTokenProvider, ProfileRepository profileRepository) {
         this.houseRepository = houseRepository;
         this.userHouseRepository = userHouseRepository;
         this.userRepository = userRepository;
         this.chattingRoomRepository = chattingRoomRepository;
         this.userChattingRepository = userChattingRepository;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.profileRepository = profileRepository;
     }
 
     public House createdHouse(HouseInsertDto houseDto, String token) {
@@ -58,8 +62,22 @@ public class HouseService {
         return house;
     }
 
-    public Optional<House> findHouseById(long id){
-        return houseRepository.findById(id);
+    public HouseResponseDto findHouseById(long id){
+        House house = houseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 하우스입니다."));
+        HouseResponseDto dto = new HouseResponseDto();
+        dto.setId(house.getId());
+        dto.setName(house.getName());
+        dto.setDescription(house.getDescription());
+        dto.setLocation(house.getLocation());
+        dto.setUsers(new ArrayList<>());
+        List<UserHouse> list = userHouseRepository.findAllByHouse(house);
+        for (UserHouse item :list){
+            Profile profile = profileRepository.findByUser(item.getUser())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로필입니다."));
+            dto.getUsers().add(new UserResponseDto(profile.getId(), profile.getImage(), profile.getName()));
+        }
+        return dto;
     }
 
     public House updateHouseDetail(HouseUpdateDto dto, long houseId) {

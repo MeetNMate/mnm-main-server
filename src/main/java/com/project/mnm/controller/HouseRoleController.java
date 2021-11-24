@@ -1,8 +1,8 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.domain.Response;
-import com.project.mnm.dto.HouseRoleInsertDto;
-import com.project.mnm.dto.HouseRoleUpdateDto;
+import com.project.mnm.dto.house.role.HouseRoleInsertDto;
+import com.project.mnm.dto.house.role.HouseRoleUpdateDto;
 import com.project.mnm.service.HouseRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
