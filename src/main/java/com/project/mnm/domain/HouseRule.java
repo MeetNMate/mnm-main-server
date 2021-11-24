@@ -1,6 +1,8 @@
 package com.project.mnm.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -30,8 +32,10 @@ public class HouseRule {
     private int upperNum;
     @Column(name = "lower_num")
     private int lowerNum;
+    @CreationTimestamp
     @Column(name = "create_at")
     private Timestamp createAt;
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updateAt;
     @Column(name = "agree_at")

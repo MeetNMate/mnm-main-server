@@ -1,6 +1,7 @@
 package com.project.mnm.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,6 +25,7 @@ public class UserHouse {
     private House house;
     @Column(name = "last_access_at")
     private Timestamp lastAccessAt;
+    @CreationTimestamp
     @Column(name = "join_at")
     private Timestamp joinAt;
     @Column(name = "exit_at")
