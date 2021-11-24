@@ -2,11 +2,11 @@ package com.project.mnm.service;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.User;
+import com.project.mnm.dto.AuthLoginResponseDto;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.json.simple.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class AuthService {
                 .build());
     }
 
-    public String loginUser(User user) throws Exception {
+    public AuthLoginResponseDto loginUser(User user) throws Exception {
         User member = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
 
@@ -50,10 +50,11 @@ public class AuthService {
 
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("uid", member.getId());
-        jsonObject.put("token", token);
-        return jsonObject.toJSONString();
+        AuthLoginResponseDto authLoginResponseDto = new AuthLoginResponseDto();
+        authLoginResponseDto.setUid(member.getId());
+        authLoginResponseDto.setToken(token);
+
+        return authLoginResponseDto;
     }
 
     public void logoutUser(User user) {
