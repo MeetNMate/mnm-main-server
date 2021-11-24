@@ -37,10 +37,13 @@ public class ChattingService {
         userChattingRepository.findByUserAndChattingRoom(user, chattingRoom)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방에 참여하고 있지 않습니다."));
 
-        chatting.setUser(user);
-        chatting.setChattingRoom(chattingRoom);
+        Chatting chat = new Chatting();
+        chat.setUser(user);
+        chat.setChattingRoom(chattingRoom);
+        chat.setMessage(chatting.getMessage());
+        chat.setIsRequest(chatting.getIsRequest());
 
-        return chattingRepository.save(chatting);
+        return chattingRepository.save(chat);
     }
 
     public Chatting makeChattingRoom(ChattingRoomInsertDto chattingRoomInsertDto) {
