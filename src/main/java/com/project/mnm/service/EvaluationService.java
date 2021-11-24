@@ -31,7 +31,7 @@ public class EvaluationService {
         this.userHouseRepository = userHouseRepository;
     }
 
-    public void addEvaluation(String userToken, EvaluationInsertDto dto) {
+    public Evaluation addEvaluation(String userToken, EvaluationInsertDto dto) {
         String userEmail = jwtTokenProvider.getUserPk(userToken);
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
@@ -43,7 +43,9 @@ public class EvaluationService {
         evaluation.setHouse(house);
         evaluation.setContent(dto.getContent());
         evaluation.setScore(dto.getScore());
-        evaluationRepository.save(evaluation);
+        Evaluation result = evaluationRepository.save(evaluation);
+        applyScoreToProfile(userToken);
+        return result;
     }
 
     public void applyScoreToProfile(String userToken) {
