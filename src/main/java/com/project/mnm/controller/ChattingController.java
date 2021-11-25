@@ -3,6 +3,7 @@ package com.project.mnm.controller;
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.Response;
+import com.project.mnm.dto.ChattingRoomExistResponseDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.dto.SocketSessionInsertDto;
 import com.project.mnm.service.ChattingService;
@@ -44,9 +45,9 @@ public class ChattingController {
         return chattingService.makeChattingRoom(chattingRoomInsertDto);
     }
 
-    @GetMapping("/chattingRoom/exist")
-    public Boolean isExisted(@RequestParam("senderUid") Long senderUid,
-                             @RequestParam("receiverUid") Long receiverUid) {
+    @GetMapping("/user/chattingRoom/exist")
+    public ChattingRoomExistResponseDto isExisted(@RequestParam("senderUid") Long senderUid,
+                                                  @RequestParam("receiverUid") Long receiverUid) {
         return chattingService.isExisted(senderUid, receiverUid);
     }
 
