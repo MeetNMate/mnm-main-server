@@ -97,6 +97,7 @@ public class ChattingService {
                 if (uc.getUser() == receiver) {
                     chattingRoomExistResponseDto.setExisted(true);
                     chattingRoomExistResponseDto.setCid(uc.getChattingRoom().getId());
+                    return chattingRoomExistResponseDto;
                 }
             }
         }
