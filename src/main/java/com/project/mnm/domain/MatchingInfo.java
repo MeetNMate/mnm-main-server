@@ -34,7 +34,7 @@ public class MatchingInfo {
     @Column(name = "user_pet_reptile_fish")
     private int userPetReptileFish;
     @Column(name = "user_pet_rodent")
-    private int userPet_bird;
+    private int userPetRodent;
     @Column(name = "user_pet_bird")
     private int userPetBird;
     @Column(name = "user_pet_etc")
@@ -48,7 +48,7 @@ public class MatchingInfo {
     @Column(name = "mate_pet_reptile_fish")
     private int matePetReptileFish;
     @Column(name = "mate_pet_rodent")
-    private int matePet_bird;
+    private int matePetRodent;
     @Column(name = "mate_pet_bird")
     private int matePetBird;
     @Column(name = "mate_pet_etc")
