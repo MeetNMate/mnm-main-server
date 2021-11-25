@@ -43,6 +43,7 @@ public class HouseService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
         List<UserChatting> userChattingList = userChattingRepository.findByChattingRoom(chattingRoom);
         House house = new House();
+        house.setName(houseDto.getName());
         house.setDescription(houseDto.getDescription());
         house.setCapacity(houseDto.getCapacity());
         house.setLocation(houseDto.getLocation());
