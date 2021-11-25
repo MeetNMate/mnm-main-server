@@ -75,7 +75,7 @@ public class ChattingService {
         return chattingRepository.save(Chatting.builder()
                 .user(sender)
                 .chattingRoom(chattingRoom)
-                .message("안녕하세요:D")
+                .message("안녕하세요\uD83D\uDC4B")
                 .sendAt(now)
                 .isRequest(false)
                 .build());
@@ -207,7 +207,7 @@ public class ChattingService {
         return chattingRepository.save(Chatting.builder()
                 .user(user)
                 .chattingRoom(chattingRoom)
-                .message("☆저와 함꼐 하시죠☆")
+                .message("저와 함꼐 하시죠\uD83E\uDD1D")
                 .sendAt(new Timestamp(System.currentTimeMillis()))
                 .isRequest(true)
                 .build());
@@ -232,7 +232,7 @@ public class ChattingService {
         return chattingRepository.save(Chatting.builder()
                 .user(user)
                 .chattingRoom(chattingRoom)
-                .message("♡좋아요♡")
+                .message("좋아요\uD83D\uDE0D")
                 .sendAt(new Timestamp(System.currentTimeMillis()))
                 .isRequest(false)
                 .build());
@@ -262,7 +262,7 @@ public class ChattingService {
         return chattingRepository.save(Chatting.builder()
                 .user(user)
                 .chattingRoom(chattingRoom)
-                .message("죄송합니다ㅠㅠ")
+                .message("죄송합니다\uD83D\uDE22")
                 .sendAt(new Timestamp(System.currentTimeMillis()))
                 .isRequest(false)
                 .build());
