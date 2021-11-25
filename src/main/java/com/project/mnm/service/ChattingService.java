@@ -5,6 +5,7 @@ import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.User;
 import com.project.mnm.domain.UserChatting;
 import com.project.mnm.dto.ChattingResponseDto;
+import com.project.mnm.dto.ChattingRoomExistResponseDto;
 import com.project.mnm.dto.ChattingRoomInsertDto;
 import com.project.mnm.dto.ChattingRoomLatestResponseDto;
 import com.project.mnm.repository.ChattingRepository;
@@ -53,7 +54,9 @@ public class ChattingService {
         User receiver = userRepository.findById(chattingRoomInsertDto.getReceiverUid())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
-        ChattingRoom chattingRoom = chattingRoomRepository.save(new ChattingRoom());
+        ChattingRoom chattingRoom = new ChattingRoom();
+        chattingRoom.setRequestSuccess(false);
+        chattingRoom = chattingRoomRepository.save(chattingRoom);
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -78,7 +81,7 @@ public class ChattingService {
                 .build());
     }
 
-    public Boolean isExisted(Long sid, Long rid) {
+    public ChattingRoomExistResponseDto isExisted(Long sid, Long rid) {
         User sender = userRepository.findById(sid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -87,12 +90,19 @@ public class ChattingService {
 
         List<UserChatting> userChattings = userChattingRepository.findByUser(sender);
 
+        ChattingRoomExistResponseDto chattingRoomExistResponseDto = new ChattingRoomExistResponseDto();
+
         for (UserChatting userChatting : userChattings) {
-             for(UserChatting uc : userChattingRepository.findByChattingRoom(userChatting.getChattingRoom())) {
-                 if (uc.getUser() == receiver) return true;
-             }
+            for(UserChatting uc : userChattingRepository.findByChattingRoom(userChatting.getChattingRoom())) {
+                if (uc.getUser() == receiver) {
+                    chattingRoomExistResponseDto.setExisted(true);
+                    chattingRoomExistResponseDto.setCid(uc.getChattingRoom().getId());
+                    return chattingRoomExistResponseDto;
+                }
+            }
         }
-        return false;
+        chattingRoomExistResponseDto.setExisted(false);
+        return chattingRoomExistResponseDto;
     }
 
     public List<ChattingRoom> getChattingRoomList(String email) {
