@@ -44,15 +44,18 @@ public class EvaluationService {
         evaluation.setContent(dto.getContent());
         evaluation.setScore(dto.getScore());
         Evaluation result = evaluationRepository.save(evaluation);
-        applyScoreToProfile(userToken);
+//        applyScoreToProfile(userToken);
+        applyScoreToProfile(dto.getAppraiseeId());
         return result;
     }
 
-    public void applyScoreToProfile(String userToken) {
-        String userEmail = jwtTokenProvider.getUserPk(userToken);
-        User user = userRepository.findByEmail(userEmail)
+    // 평가 받은 사람으로 조회해야하는 데 반대로 해놨길래 바꿨어요.
+    public void applyScoreToProfile(Long appraiseeId) {
+        User user = userRepository.findById(appraiseeId)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
         List<Evaluation> list = evaluationRepository.findAllByAppraisee(user);
+
         int totalScore = 0;
         int count = 0;
         for (Evaluation item : list) {
@@ -66,6 +69,26 @@ public class EvaluationService {
         profile.setScore(totalScore);
         profileRepository.save(profile);
     }
+
+//    public void applyScoreToProfile(String userToken) {
+//        String userEmail = jwtTokenProvider.getUserPk(userToken);
+//        User user = userRepository.findByEmail(userEmail)
+//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+//        List<Evaluation> list = evaluationRepository.findAllByAppraisee(user);
+//        System.out.println("===="+user.getId()+""+list);
+//        int totalScore = 0;
+//        int count = 0;
+//        for (Evaluation item : list) {
+//            totalScore += item.getScore();
+//            count++;
+//        }
+//        totalScore /= count;
+//        Profile profile = profileRepository.findByUser(user)
+//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+//
+//        profile.setScore(totalScore);
+//        profileRepository.save(profile);
+//    }
 
     public List<User> findDoNotEvaluate(String userToken, long houseId) {
         String userEmail = jwtTokenProvider.getUserPk(userToken);

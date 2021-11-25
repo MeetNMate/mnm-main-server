@@ -65,7 +65,8 @@ public class UserHouseService {
             return null;
         }
         for (UserHouse item : list) {
-            houseList.add(item.getHouse());
+            // 하우스 나갔는지 조사를 추가했어요.
+            if(item.getExitAt() == null) houseList.add(item.getHouse());
         }
         return houseList;
     }
