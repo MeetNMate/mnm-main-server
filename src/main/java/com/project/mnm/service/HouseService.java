@@ -76,7 +76,7 @@ public class HouseService {
         for (UserHouse item :list){
             Profile profile = profileRepository.findByUser(item.getUser())
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로필입니다."));
-            dto.getUsers().add(new UserResponseDto(profile.getId(), profile.getImage(), profile.getName()));
+            dto.getUsers().add(new UserResponseDto(profile.getUser().getId(), profile.getImage(), profile.getName()));
         }
         return dto;
     }
