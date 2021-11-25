@@ -53,7 +53,9 @@ public class ChattingService {
         User receiver = userRepository.findById(chattingRoomInsertDto.getReceiverUid())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
-        ChattingRoom chattingRoom = chattingRoomRepository.save(new ChattingRoom());
+        ChattingRoom chattingRoom = new ChattingRoom();
+        chattingRoom.setRequestSuccess(false);
+        chattingRoom = chattingRoomRepository.save(chattingRoom);
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
 

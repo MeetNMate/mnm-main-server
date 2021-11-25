@@ -39,7 +39,7 @@ public class ChattingController {
                 socketSessionInsertDto.getUid(), socketSessionInsertDto.getSid());
     }
 
-    @PostMapping("/chat")
+    @PostMapping("/user/chattingRoom/make")
     public Chatting makeChattingRoom(@RequestBody ChattingRoomInsertDto chattingRoomInsertDto) {
         return chattingService.makeChattingRoom(chattingRoomInsertDto);
     }
