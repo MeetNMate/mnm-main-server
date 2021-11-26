@@ -3,6 +3,7 @@ package com.project.mnm.service;
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.*;
 import com.project.mnm.dto.EvaluationInsertDto;
+import com.project.mnm.dto.evaluation.EvaluationProfileCommentDto;
 import com.project.mnm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,5 +110,18 @@ public class EvaluationService {
         }
 
         return new ArrayList<>(houseUsers);
+    }
+
+    public List<EvaluationProfileCommentDto> getAllEvaluationsByUid(long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+        List<Evaluation> list = evaluationRepository.findAllByAppraisee(user);
+        List<EvaluationProfileCommentDto> results = new ArrayList<>();
+        for (Evaluation item : list) {
+            Profile profile = profileRepository.findByUser(item.getAppraiser())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로필입니다."));
+            results.add(new EvaluationProfileCommentDto(item.getId(), profile, item.getScore(), item.getContent(), item.getCreateAt()));
+        }
+        return results;
     }
 }
