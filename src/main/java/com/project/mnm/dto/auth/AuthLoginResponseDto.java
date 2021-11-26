@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

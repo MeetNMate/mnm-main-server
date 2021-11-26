@@ -2,10 +2,10 @@ package com.project.mnm.controller;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.Chatting;
-import com.project.mnm.domain.Response;
-import com.project.mnm.dto.ChattingRoomExistResponseDto;
-import com.project.mnm.dto.ChattingRoomInsertDto;
-import com.project.mnm.dto.SocketSessionInsertDto;
+import com.project.mnm.dto.common.Response;
+import com.project.mnm.dto.chatting.ChattingRoomExistResponseDto;
+import com.project.mnm.dto.chatting.ChattingRoomInsertDto;
+import com.project.mnm.dto.socket.SocketSessionInsertDto;
 import com.project.mnm.service.ChattingService;
 import com.project.mnm.service.SocketSessionService;
 import org.springframework.beans.factory.annotation.Autowired;

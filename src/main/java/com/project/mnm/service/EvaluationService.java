@@ -2,7 +2,7 @@ package com.project.mnm.service;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.*;
-import com.project.mnm.dto.EvaluationInsertDto;
+import com.project.mnm.dto.evaluation.EvaluationInsertDto;
 import com.project.mnm.dto.evaluation.EvaluationProfileCommentDto;
 import com.project.mnm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

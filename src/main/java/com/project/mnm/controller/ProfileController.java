@@ -1,8 +1,8 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.config.JwtTokenProvider;
-import com.project.mnm.domain.Response;
-import com.project.mnm.dto.ProfileInsertDto;
+import com.project.mnm.dto.common.Response;
+import com.project.mnm.dto.profile.ProfileInsertDto;
 import com.project.mnm.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

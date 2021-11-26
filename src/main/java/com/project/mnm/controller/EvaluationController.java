@@ -1,7 +1,7 @@
 package com.project.mnm.controller;
 
-import com.project.mnm.domain.Response;
-import com.project.mnm.dto.EvaluationInsertDto;
+import com.project.mnm.dto.common.Response;
+import com.project.mnm.dto.evaluation.EvaluationInsertDto;
 import com.project.mnm.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.chatting;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +9,10 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-public class ChattingRoomLatestResponseDto {
+public class ChattingResponseDto {
+    private Long cid;
     private Long uid;
-    private Timestamp sendAt;
     private String message;
-    private int number;
+    private Timestamp sendAt;
+    private Boolean isRequest;
 }

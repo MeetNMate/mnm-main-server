@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.chatting;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SocketSessionInsertDto {
-    private Long uid;
+public class ChattingRoomExistResponseDto {
+    private boolean isExisted;
     private Long cid;
-    private String sid;
 }

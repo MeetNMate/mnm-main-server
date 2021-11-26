@@ -1,6 +1,6 @@
 package com.project.mnm.controller;
 
-import com.project.mnm.domain.Response;
+import com.project.mnm.dto.common.Response;
 import com.project.mnm.dto.house.rule.HouseRuleInsertDto;
 import com.project.mnm.dto.house.rule.HouseRuleUpdateDto;
 import com.project.mnm.service.HouseRuleService;

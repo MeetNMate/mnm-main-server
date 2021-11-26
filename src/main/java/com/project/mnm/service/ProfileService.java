@@ -2,7 +2,7 @@ package com.project.mnm.service;
 
 import com.project.mnm.domain.Profile;
 import com.project.mnm.domain.User;
-import com.project.mnm.dto.ProfileInsertDto;
+import com.project.mnm.dto.profile.ProfileInsertDto;
 import com.project.mnm.repository.ProfileRepository;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

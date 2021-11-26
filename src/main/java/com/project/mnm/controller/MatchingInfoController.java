@@ -2,7 +2,7 @@ package com.project.mnm.controller;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.MatchingInfo;
-import com.project.mnm.domain.Response;
+import com.project.mnm.dto.common.Response;
 import com.project.mnm.service.MatchingInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

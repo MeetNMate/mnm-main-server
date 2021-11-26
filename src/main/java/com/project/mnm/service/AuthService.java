@@ -2,7 +2,7 @@ package com.project.mnm.service;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.User;
-import com.project.mnm.dto.AuthLoginResponseDto;
+import com.project.mnm.dto.auth.AuthLoginResponseDto;
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

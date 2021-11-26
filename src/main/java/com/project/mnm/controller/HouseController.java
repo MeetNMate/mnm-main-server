@@ -1,7 +1,7 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.domain.House;
-import com.project.mnm.domain.Response;
+import com.project.mnm.dto.common.Response;
 import com.project.mnm.dto.house.lobby.HouseInsertDto;
 import com.project.mnm.dto.house.lobby.HouseUpdateDto;
 import com.project.mnm.service.HouseService;
