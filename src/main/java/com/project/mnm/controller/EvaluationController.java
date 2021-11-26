@@ -41,4 +41,17 @@ public class EvaluationController {
         }
         return response;
     }
+
+    @GetMapping("profile/{id}")
+    public Response getProfileComment(@PathVariable("id") int id){
+        Response response;
+        try{
+            String message = "평가정보 조회를 완료했습니다.";
+            response = new Response("success", message, evaluationService.getAllEvaluationsByUid(id));
+        } catch (Exception e) {
+            String message = "평가정보 조회를 하는 도중 오류가 발생했습니다.";
+            response = new Response("failed", message, e.toString());
+        }
+        return response;
+    }
 }
