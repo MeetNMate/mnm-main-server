@@ -1,7 +1,7 @@
 package com.project.mnm.repository;
 
 import com.project.mnm.domain.User;
-import com.project.mnm.service.UserService;
+import com.project.mnm.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

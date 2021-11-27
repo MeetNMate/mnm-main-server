@@ -1,21 +1,26 @@
-package com.project.mnm.service;
+package com.project.mnm.service.user;
 
 import com.project.mnm.domain.Profile;
 import com.project.mnm.domain.User;
 import com.project.mnm.dto.profile.ProfileInsertDto;
 import com.project.mnm.repository.ProfileRepository;
 import com.project.mnm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequiredArgsConstructor
 @Service
 public class ProfileService {
-
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ImageService imageService;
+
+    @Autowired
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, ImageService imageService) {
+        this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
+        this.imageService = imageService;
+    }
 
     public Profile getProfile(Long uid) {
         User user = userRepository.findById(uid)
@@ -26,13 +31,13 @@ public class ProfileService {
     }
 
     public Profile addProfile(String email, ProfileInsertDto profileInsertDto) throws Exception {
+        String imagePath;
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
-        if (!profileRepository.findByUser(user).isEmpty())
+        if (profileRepository.findByUser(user).isPresent())
             throw new Exception("이미 프로필이 등록되어 있습니다.");
-
-        String imagePath = null;
 
         if (profileInsertDto.getImageFile() == null) {
             imagePath = "images/profile/default.png";

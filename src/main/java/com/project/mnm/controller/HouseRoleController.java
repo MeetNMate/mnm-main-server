@@ -3,7 +3,7 @@ package com.project.mnm.controller;
 import com.project.mnm.dto.common.Response;
 import com.project.mnm.dto.house.role.HouseRoleInsertDto;
 import com.project.mnm.dto.house.role.HouseRoleUpdateDto;
-import com.project.mnm.service.HouseRoleService;
+import com.project.mnm.service.house.HouseRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 등록을 성공적으로 완료했습니다.";
-            response = new Response("success", message, houseRoleService.createHouseRole(dto));
+            response = new Response("success", message, houseRoleService.saveHouseRole(dto));
         } catch (Exception e) {
             String message = "하우스 롤을 등록하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
@@ -35,7 +35,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 조회를 성공적으로 완료했습니다.";
-            response = new Response("success", message, houseRoleService.findHouseRolesByHouseId(houseId));
+            response = new Response("success", message, houseRoleService.findAllHouseRoles(houseId));
         } catch (Exception e) {
             String message = "하우스 롤을 조회하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
@@ -48,7 +48,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 수정을 성공적으로 완료했습니다.";
-            response = new Response("success", message, houseRoleService.updateHouseRole(roleId, dto));
+            response = new Response("success", message, houseRoleService.modifyHouseRole(roleId, dto));
         } catch (Exception e) {
             String message = "하우스 롤을 수정하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
@@ -61,7 +61,7 @@ public class HouseRoleController {
         Response response;
         try {
             String message = "하우스 롤 삭제를 성공적으로 완료했습니다.";
-            houseRoleService.deleteHouseRole(roleId);
+            houseRoleService.removeHouseRole(roleId);
             response = new Response("success", message, "");
         } catch (Exception e) {
             String message = "하우스 롤을 삭제하는 도중 오류가 발생했습니다.";

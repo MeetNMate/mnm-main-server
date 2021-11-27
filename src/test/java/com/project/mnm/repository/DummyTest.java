@@ -1,12 +1,11 @@
 package com.project.mnm.repository;
 
 import com.project.mnm.domain.User;
-import com.project.mnm.service.AuthService;
+import com.project.mnm.service.user.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Timestamp;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -45,7 +44,7 @@ public class DummyTest {
             user.setEmail("mnmtest"+i+"@gmail.com");
             user.setPassword("blackpink0808");
             try {
-                authService.joinUser(user);
+                authService.saveUser(user);
             } catch (Exception e) {
                 e.printStackTrace();
             }

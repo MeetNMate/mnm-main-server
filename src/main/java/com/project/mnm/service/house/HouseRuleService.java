@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.house;
 
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.HouseRule;
@@ -29,7 +29,7 @@ public class HouseRuleService {
         this.userRepository = userRepository;
     }
 
-    public HouseRule createHouseRule(HouseRuleInsertDto dto) {
+    public HouseRule saveHouseRule(HouseRuleInsertDto dto) {
         HouseRule houseRule = new HouseRule();
         houseRule.setNewRule(dto.getRule());
         houseRule.setOriginalRule(dto.getRule());
@@ -46,7 +46,7 @@ public class HouseRuleService {
         return houseRuleRepository.save(houseRule);
     }
 
-    public List<HouseRuleResponseDto> findHouseRulesByHouseId(long houseId) {
+    public List<HouseRuleResponseDto> findAllHouseRules(long houseId) {
         List<HouseRule> rules = houseRuleRepository.findByHouse(houseRepository.findById(houseId));
         List<HouseRuleResponseDto> results = new ArrayList<>();
         for (HouseRule rule : rules) {
@@ -56,7 +56,7 @@ public class HouseRuleService {
         return results;
     }
 
-    public HouseRule updateHouseRule(long ruleId, HouseRuleUpdateDto dto) {
+    public HouseRule modifyHouseRule(long ruleId, HouseRuleUpdateDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
         HouseRule houseRule = houseRuleRepository.findById(ruleId)
@@ -71,7 +71,7 @@ public class HouseRuleService {
         return houseRuleRepository.save(houseRule);
     }
 
-    public void deleteHouseRule(long ruleId) {
+    public void removeHouseRule(long ruleId) {
         HouseRule houseRule = houseRuleRepository.findById(ruleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재한지 않는 룰입니다."));
         houseRuleRepository.delete(houseRule);
