@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.chatting;
 
 import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.SocketSession;

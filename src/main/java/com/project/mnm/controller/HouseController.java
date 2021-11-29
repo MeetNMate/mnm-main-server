@@ -42,7 +42,7 @@ public class HouseController {
         Response response;
         try {
             String message;
-            List<House> result = userHouseService.findAllHouse(token);
+            List<House> result = userHouseService.findAllHouses(token);
             if (result == null) {
                 message = "소속된 하우스가 없습니다.";
             } else {

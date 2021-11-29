@@ -3,17 +3,21 @@ package com.project.mnm.controller;
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.MatchingInfo;
 import com.project.mnm.dto.common.Response;
-import com.project.mnm.service.MatchingInfoService;
+import com.project.mnm.service.matching.MatchingInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user/matchinginfo")
 @RestController
 public class MatchingInfoController {
+    private final MatchingInfoService matchingInfoService;
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    private MatchingInfoService matchingInfoService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public MatchingInfoController(MatchingInfoService matchingInfoService, JwtTokenProvider jwtTokenProvider) {
+        this.matchingInfoService = matchingInfoService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @GetMapping("/{uid}")
     public Response getMatchingInfo(@PathVariable("uid") Long uid) {
@@ -72,7 +76,7 @@ public class MatchingInfoController {
     }
 
     @DeleteMapping("/{uid}")
-    public Response deleteMatchingInfo(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
+    public Response deleteMatchingInfo(@RequestHeader(value = "X-AUTH-TOKEN") String token, @PathVariable String uid) {
         Response response = new Response();
 
         matchingInfoService.deleteMatchingInfo(jwtTokenProvider.getUserPk(token));

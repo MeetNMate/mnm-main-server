@@ -41,7 +41,7 @@ public class UserHouseService {
         // 평가를 완료하면 true로 변경된다
     }
 
-    public List<House> findAllHouse(String token) {
+    public List<House> findAllHouses(String token) {
         String userEmail = jwtTokenProvider.getUserPk(token);
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));

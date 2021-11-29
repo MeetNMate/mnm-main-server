@@ -22,7 +22,7 @@ public class ProfileService {
         this.imageService = imageService;
     }
 
-    public Profile getProfile(Long uid) {
+    public Profile findOneProfile(Long uid) {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -30,7 +30,7 @@ public class ProfileService {
                 .orElseThrow(() -> new IllegalArgumentException("프로필이 등록되어있지 않습니다."));
     }
 
-    public Profile addProfile(String email, ProfileInsertDto profileInsertDto) throws Exception {
+    public Profile saveProfile(String email, ProfileInsertDto profileInsertDto) throws Exception {
         String imagePath;
 
         User user = userRepository.findByEmail(email)
@@ -100,7 +100,7 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public void deleteProfile(String email) {
+    public void removeProfile(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 

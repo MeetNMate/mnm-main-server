@@ -11,10 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/user/profile")
 @RestController
 public class ProfileController {
+    private final ProfileService profileService;
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public ProfileController(ProfileService profileService, JwtTokenProvider jwtTokenProvider) {
+        this.profileService = profileService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @GetMapping("/{uid}")
     public Response getProfile(@PathVariable("uid") Long uid) {
@@ -23,7 +27,7 @@ public class ProfileController {
         try {
             response.setResponse("success");
             response.setMessage("프로필 조회를 성공적으로 완료했습니다.");
-            response.setData(profileService.getProfile(uid));
+            response.setData(profileService.findOneProfile(uid));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -43,7 +47,7 @@ public class ProfileController {
             String email = jwtTokenProvider.getUserPk(token);
             response.setResponse("success");
             response.setMessage("프로필 등록을 성공적으로 완료했습니다.");
-            response.setData(profileService.addProfile(email, profileInsertDto));
+            response.setData(profileService.saveProfile(email, profileInsertDto));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -107,7 +111,7 @@ public class ProfileController {
     public Response deleteProfile(@RequestHeader(value = "X-AUTH-TOKEN") String token) {
         Response response = new Response();
 
-        profileService.deleteProfile(jwtTokenProvider.getUserPk(token));
+        profileService.removeProfile(jwtTokenProvider.getUserPk(token));
 
         try {
             response.setResponse("success");

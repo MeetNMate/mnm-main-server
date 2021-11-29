@@ -2,7 +2,7 @@ package com.project.mnm.controller;
 
 import com.project.mnm.dto.common.Response;
 import com.project.mnm.dto.evaluation.EvaluationInsertDto;
-import com.project.mnm.service.EvaluationService;
+import com.project.mnm.service.evaluation.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class EvaluationController {
         Response response;
         try{
             String message = "평가 등록을 성공적으로 완료했습니다.";
-            response = new Response("success", message, evaluationService.addEvaluation(token, dto));
+            response = new Response("success", message, evaluationService.saveEvaluation(token, dto));
         } catch (Exception e) {
             String message = "평가 등록을 하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());
@@ -47,7 +47,7 @@ public class EvaluationController {
         Response response;
         try{
             String message = "평가정보 조회를 완료했습니다.";
-            response = new Response("success", message, evaluationService.getAllEvaluationsByUid(id));
+            response = new Response("success", message, evaluationService.findAllEvaluationsByUid(id));
         } catch (Exception e) {
             String message = "평가정보 조회를 하는 도중 오류가 발생했습니다.";
             response = new Response("failed", message, e.toString());

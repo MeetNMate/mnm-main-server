@@ -6,8 +6,8 @@ import com.project.mnm.dto.common.Response;
 import com.project.mnm.dto.chatting.ChattingRoomExistResponseDto;
 import com.project.mnm.dto.chatting.ChattingRoomInsertDto;
 import com.project.mnm.dto.socket.SocketSessionInsertDto;
-import com.project.mnm.service.ChattingService;
-import com.project.mnm.service.SocketSessionService;
+import com.project.mnm.service.chatting.ChattingService;
+import com.project.mnm.service.chatting.SocketSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ChattingController {
+    private final ChattingService chattingService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final SocketSessionService socketSessionService;
+
     @Autowired
-    private ChattingService chattingService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-    @Autowired
-    private SocketSessionService socketSessionService;
+    public ChattingController(ChattingService chattingService, JwtTokenProvider jwtTokenProvider, SimpMessagingTemplate simpMessagingTemplate, SocketSessionService socketSessionService) {
+        this.chattingService = chattingService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.socketSessionService = socketSessionService;
+    }
 
     @MessageMapping("/receive/{cid}")
     @SendTo("/send/{cid}")

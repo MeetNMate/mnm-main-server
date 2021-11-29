@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.matching;
 
 import com.project.mnm.domain.User;
 import com.project.mnm.repository.UserRepository;

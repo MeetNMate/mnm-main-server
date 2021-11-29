@@ -1,5 +1,6 @@
-package com.project.mnm.service;
+package com.project.mnm.service.chatting;
 
+import com.project.mnm.service.chatting.SocketSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;

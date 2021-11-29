@@ -1,7 +1,7 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.dto.common.Response;
-import com.project.mnm.service.MatchingService;
+import com.project.mnm.service.matching.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class MatchingController {
+    private final MatchingService matchingService;
 
     @Autowired
-    private MatchingService matchingService;
+    public MatchingController(MatchingService matchingService) {
+        this.matchingService = matchingService;
+    }
 
     @GetMapping("/{email}/use/matching")
     public Response isUseMatching(@PathVariable("email") String email) {

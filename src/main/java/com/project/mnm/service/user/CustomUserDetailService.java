@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.user;
 
 import com.project.mnm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

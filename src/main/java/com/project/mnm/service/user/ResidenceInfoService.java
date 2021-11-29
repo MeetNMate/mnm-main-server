@@ -1,21 +1,26 @@
-package com.project.mnm.service;
+package com.project.mnm.service.user;
 
 import com.project.mnm.domain.ResidenceInfo;
 import com.project.mnm.domain.User;
 import com.project.mnm.repository.ResidenceInfoRepository;
 import com.project.mnm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 
-@RequiredArgsConstructor
 @Service
 public class ResidenceInfoService {
     private final ResidenceInfoRepository residenceInfoRepository;
     private final UserRepository userRepository;
 
-    public ResidenceInfo getResidenceInfo(Long uid) {
+    @Autowired
+    public ResidenceInfoService(ResidenceInfoRepository residenceInfoRepository, UserRepository userRepository) {
+        this.residenceInfoRepository = residenceInfoRepository;
+        this.userRepository = userRepository;
+    }
+
+    public ResidenceInfo findResidenceInfo(Long uid) {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -28,7 +33,7 @@ public class ResidenceInfoService {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
-        if (!residenceInfoRepository.findByUser(user).isEmpty())
+        if (residenceInfoRepository.findByUser(user).isPresent())
             throw new Exception("이미 거주정보가 등록되어 있습니다.");
 
         return residenceInfoRepository.save(ResidenceInfo.builder()
@@ -41,7 +46,7 @@ public class ResidenceInfoService {
                 .build());
     }
 
-    public ResidenceInfo updateResidenceInfo(Long uid, ResidenceInfo info) {
+    public ResidenceInfo modifyResidenceInfo(Long uid, ResidenceInfo info) {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
@@ -62,7 +67,7 @@ public class ResidenceInfoService {
         return residenceInfoRepository.save(residenceInfo);
     }
 
-    public void deleteResidenceInfo(Long uid) {
+    public void removeResidenceInfo(Long uid) {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
 
