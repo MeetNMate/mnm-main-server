@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.chatting;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,13 +1,13 @@
-package com.project.mnm.service;
+package com.project.mnm.service.chatting;
 
 import com.project.mnm.domain.Chatting;
 import com.project.mnm.domain.ChattingRoom;
 import com.project.mnm.domain.User;
 import com.project.mnm.domain.UserChatting;
-import com.project.mnm.dto.ChattingResponseDto;
-import com.project.mnm.dto.ChattingRoomExistResponseDto;
-import com.project.mnm.dto.ChattingRoomInsertDto;
-import com.project.mnm.dto.ChattingRoomLatestResponseDto;
+import com.project.mnm.dto.chatting.ChattingResponseDto;
+import com.project.mnm.dto.chatting.ChattingRoomExistResponseDto;
+import com.project.mnm.dto.chatting.ChattingRoomInsertDto;
+import com.project.mnm.dto.chatting.ChattingRoomLatestResponseDto;
 import com.project.mnm.repository.ChattingRepository;
 import com.project.mnm.repository.ChattingRoomRepository;
 import com.project.mnm.repository.UserChattingRepository;

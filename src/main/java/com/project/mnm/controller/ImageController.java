@@ -1,15 +1,19 @@
 package com.project.mnm.controller;
 
-import com.project.mnm.domain.Response;
-import com.project.mnm.service.ImageService;
+import com.project.mnm.dto.common.Response;
+import com.project.mnm.service.user.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user/image")
 @RestController
 public class ImageController {
+    private final ImageService imageService;
+
     @Autowired
-    private ImageService imageService;
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
 
     @GetMapping("")
     public Response getImage(@RequestParam("imagePath") String imagePath) {

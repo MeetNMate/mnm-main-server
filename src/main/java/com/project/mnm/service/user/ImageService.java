@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;

@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.house;
 
 import com.project.mnm.domain.House;
 import com.project.mnm.domain.HouseRole;
@@ -32,7 +32,7 @@ public class HouseRoleService {
         this.profileRepository = profileRepository;
     }
 
-    public HouseRole createHouseRole(HouseRoleInsertDto dto) {
+    public HouseRole saveHouseRole(HouseRoleInsertDto dto) {
         HouseRole houseRole = new HouseRole();
         houseRole.setRole(dto.getRole());
         houseRole.setWeek(dto.getWeek());
@@ -49,7 +49,7 @@ public class HouseRoleService {
         return houseRoleRepository.save(houseRole);
     }
 
-    public List<HouseRoleResponseDto> findHouseRolesByHouseId(long houseId) {
+    public List<HouseRoleResponseDto> findAllHouseRoles(long houseId) {
         List<HouseRoleResponseDto> results = new ArrayList<>();
         List<HouseRole> list = houseRoleRepository.findByHouse(houseRepository.findById(houseId));
         for (HouseRole role : list) {
@@ -64,7 +64,7 @@ public class HouseRoleService {
         return results;
     }
 
-    public HouseRole updateHouseRole(long roleId, HouseRoleUpdateDto dto) {
+    public HouseRole modifyHouseRole(long roleId, HouseRoleUpdateDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
         HouseRole houseRole = houseRoleRepository.findById(roleId)
@@ -80,7 +80,7 @@ public class HouseRoleService {
         return houseRoleRepository.save(houseRole);
     }
 
-    public void deleteHouseRole(long roleId) {
+    public void removeHouseRole(long roleId) {
         HouseRole houseRole = houseRoleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재한지 않는 룰입니다."));
         houseRoleRepository.delete(houseRole);

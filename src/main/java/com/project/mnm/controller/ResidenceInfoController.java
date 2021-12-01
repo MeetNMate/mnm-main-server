@@ -1,16 +1,20 @@
 package com.project.mnm.controller;
 
 import com.project.mnm.domain.ResidenceInfo;
-import com.project.mnm.domain.Response;
-import com.project.mnm.service.ResidenceInfoService;
+import com.project.mnm.dto.common.Response;
+import com.project.mnm.service.user.ResidenceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user/residenceinfo")
 @RestController
 public class ResidenceInfoController {
+    private final ResidenceInfoService residenceInfoService;
+
     @Autowired
-    private ResidenceInfoService residenceInfoService;
+    public ResidenceInfoController(ResidenceInfoService residenceInfoService) {
+        this.residenceInfoService = residenceInfoService;
+    }
 
     @GetMapping("/{uid}")
     public Response getResidenceInfo(@PathVariable("uid") Long uid) {
@@ -19,7 +23,7 @@ public class ResidenceInfoController {
         try {
             response.setResponse("success");
             response.setMessage("거주정보 조회를 성공적으로 완료했습니다.");
-            response.setData(residenceInfoService.getResidenceInfo(uid));
+            response.setData(residenceInfoService.findResidenceInfo(uid));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -58,7 +62,7 @@ public class ResidenceInfoController {
         try {
             response.setResponse("success");
             response.setMessage("거주정보 수정을 성공적으로 완료했습니다.");
-            response.setData(residenceInfoService.updateResidenceInfo(uid, info));
+            response.setData(residenceInfoService.modifyResidenceInfo(uid, info));
         }
         catch (Exception e) {
             response.setResponse("failed");
@@ -73,7 +77,7 @@ public class ResidenceInfoController {
     public Response deleteResidenceInfo(@PathVariable("uid") Long uid) {
         Response response = new Response();
 
-        residenceInfoService.deleteResidenceInfo(uid);
+        residenceInfoService.removeResidenceInfo(uid);
 
         try {
             response.setResponse("success");

@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.matching;
 
 import com.project.mnm.domain.MatchingInfo;
 import com.project.mnm.domain.User;

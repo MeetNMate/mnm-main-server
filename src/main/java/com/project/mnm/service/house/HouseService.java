@@ -1,4 +1,4 @@
-package com.project.mnm.service;
+package com.project.mnm.service.house;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.*;
@@ -35,7 +35,7 @@ public class HouseService {
         this.profileRepository = profileRepository;
     }
 
-    public House createdHouse(HouseInsertDto houseDto, String token) {
+    public House saveHouse(HouseInsertDto houseDto, String token) {
         ChattingRoom chattingRoom = chattingRoomRepository.findById(houseDto.getChattingRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다."));
         String userEmail = jwtTokenProvider.getUserPk(token);
@@ -63,7 +63,7 @@ public class HouseService {
         return house;
     }
 
-    public HouseResponseDto findHouseById(long id){
+    public HouseResponseDto findOneHouse(long id){
         House house = houseRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 하우스입니다."));
         HouseResponseDto dto = new HouseResponseDto();
@@ -81,7 +81,7 @@ public class HouseService {
         return dto;
     }
 
-    public House updateHouseDetail(HouseUpdateDto dto, long houseId) {
+    public House modifyHouse(HouseUpdateDto dto, long houseId) {
         House house = houseRepository.findById(houseId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 하우스입니다."));
         house.setLocation(dto.getLocation());

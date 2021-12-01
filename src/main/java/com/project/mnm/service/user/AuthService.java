@@ -1,17 +1,16 @@
-package com.project.mnm.service;
+package com.project.mnm.service.user;
 
 import com.project.mnm.config.JwtTokenProvider;
 import com.project.mnm.domain.User;
-import com.project.mnm.dto.AuthLoginResponseDto;
+import com.project.mnm.dto.auth.AuthLoginResponseDto;
 import com.project.mnm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Collections;
 
-@RequiredArgsConstructor
 @Service
 public class AuthService {
 
@@ -19,7 +18,14 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-    public User joinUser(User user) throws Exception {
+    @Autowired
+    public AuthService(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
+    }
+
+    public User saveUser(User user) throws Exception {
         if (!userRepository.findByEmail(user.getEmail()).isEmpty())
             throw new Exception("이미 존재하는 회원입니다.");
 
@@ -36,7 +42,7 @@ public class AuthService {
                 .build());
     }
 
-    public AuthLoginResponseDto loginUser(User user) throws Exception {
+    public AuthLoginResponseDto findUser(User user) throws Exception {
         User member = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
 

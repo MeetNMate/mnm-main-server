@@ -1,4 +1,4 @@
-package com.project.mnm.dto;
+package com.project.mnm.dto.profile;
 
 import lombok.Getter;
 import lombok.Setter;

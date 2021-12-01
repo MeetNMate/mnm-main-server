@@ -1,8 +1,8 @@
 package com.project.mnm.controller;
 
-import com.project.mnm.domain.Response;
+import com.project.mnm.dto.common.Response;
 import com.project.mnm.domain.User;
-import com.project.mnm.service.UserService;
+import com.project.mnm.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +12,21 @@ import java.util.List;
 @RequestMapping("/user/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("")
     public List<User> getAll() {
-        return userService.getAllUsers();
+        return userService.findAllUsers();
     }
 
     @GetMapping("/{email}")
     public User get(@PathVariable("email") String email) {
-        return userService.getUser(email);
+        return userService.findOneUser(email);
     }
 
     @DeleteMapping("")
@@ -30,7 +34,7 @@ public class UserController {
         Response response = new Response();
 
         try {
-            userService.deleteAllUsers();
+            userService.removeAllUsers();
 
             response.setResponse("success");
             response.setMessage("모든 회원을 삭제하였습니다.");
@@ -49,7 +53,7 @@ public class UserController {
         Response response = new Response();
 
         try {
-            userService.deleteUser(email);
+            userService.removeOneUserByEmail(email);
 
             response.setResponse("success");
             response.setMessage("회원 삭제를 성공적으로 완료했습니다.");

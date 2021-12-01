@@ -1,6 +1,6 @@
 package com.project.mnm.config;
 
-import com.project.mnm.service.StompHandler;
+import com.project.mnm.service.chatting.StompHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
